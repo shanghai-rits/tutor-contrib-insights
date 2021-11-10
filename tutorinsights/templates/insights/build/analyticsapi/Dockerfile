@@ -16,19 +16,19 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-ENV ANALYTICS_API_CFG /openedx/analytics_api.yml
+ENV ANALYTICS_API_CFG /edx/etc/analytics_api.yml
 
-WORKDIR /opennedx/analytics_api
-COPY requirements /openedx/analytics_api/requirements
+WORKDIR /edx/app/analytics_api
+COPY requirements /edx/app/analytics_api/requirements
 RUN pip install -r requirements/production.txt
 
 EXPOSE 8100
-CMD gunicorn --bind=0.0.0.0:8100 --workers 2 --max-requests=1000 -c /openedx/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
+CMD gunicorn --bind=0.0.0.0:8100 --workers 2 --max-requests=1000 -c /edx/app/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
 
 RUN useradd -m --shell /bin/false app
 USER app
-COPY . /openedx/analytics_api
+COPY . /edx/app/analytics_api
 
 FROM app as newrelic
 RUN pip install newrelic
-CMD newrelic-admin run-program gunicorn --bind=0.0.0.0:8100 --workers 2 --max-requests=1000 -c /openedx/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
+CMD newrelic-admin run-program gunicorn --bind=0.0.0.0:8100 --workers 2 --max-requests=1000 -c /edx/app/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application

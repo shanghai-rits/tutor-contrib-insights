@@ -3,7 +3,7 @@ insights-job:
   environment:
     DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
   volumes:
-    - ../plugins/insights/apps/insights/settings/tutor:/openedx/insights/analytics_dashboard/settings/tutor:ro
+    - ../plugins/insights/apps/insights/settings/tutor:/edx/app/insights/analytics_dashboard/settings/tutor:ro
   depends_on: {{ [("lms", RUN_LMS), ("mysql", RUN_MYSQL)]|list_if }}
 
 analyticsapi-job:
@@ -11,5 +11,5 @@ analyticsapi-job:
   environment:
     DJANGO_SETTINGS_MODULE: analyticsdataserver.settings.tutor.production
   volumes:
-    - ../plugins/insights/apps/analyticsapi/settings/tutor:/openedx/insights/analyticsdataserver/settings/tutor:ro
+    - ../plugins/insights/apps/analyticsapi/settings/tutor:/edx/app/insights/analyticsdataserver/settings/tutor:ro
   depends_on: {{ [("mysql", RUN_MYSQL), ("elasticsearch", RUN_ELASTICSEARCH)]|list_if }}

@@ -14,10 +14,10 @@ RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
-ENV ANALYTICS_DASHBOARD_CFG /openedx/insights.yml
+ENV ANALYTICS_DASHBOARD_CFG /edx/etc/insights.yml
 
-WORKDIR /openedx/analytics_dashboard
-COPY requirements /openedx/analytics_dashboard/requirements
+WORKDIR /edx/app/analytics_dashboard
+COPY requirements /edx/app/analytics_dashboard/requirements
 RUN python3.8 -m pip install -r requirements/production.txt
 
 EXPOSE 8110
@@ -25,7 +25,7 @@ CMD gunicorn -b 0.0.0.0:8110 --workers 2 --timeout=300 analytics_dashboard.wsgi:
 
 RUN useradd -m --shell /bin/false app
 USER app
-COPY . /openedx/analytics_dashboard
+COPY . /edx/app/analytics_dashboard
 
 FROM openedx as edx.org
 RUN python3.8 -m pip install newrelic

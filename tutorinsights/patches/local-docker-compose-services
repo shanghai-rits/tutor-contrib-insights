@@ -14,7 +14,7 @@ insights:
       DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
   image: {{ INSIGHTS_DOCKER_IMAGE }}
   volumes:
-    - ../../data/insights:/openedx/insights/:ro
+    - ../../data/insights:/edx/app/insights/:ro
 
 analyticsapi:
   image: {{ INSIGHTS_ANALYTICSAPI_DOCKER_IMAGE }}
@@ -29,4 +29,4 @@ analyticsapi:
     DB_PASSWORD: {{ INSIGHTS_MYSQL_PASSWORD }}
     ELASTICSEARCH_LEARNERS_HOST: {{ ELASTICSEARCH_HOST }}
   volumes:
-    - ../../data/analyticsapi:/openedx/analyticsapi/:ro
+    - ../../data/analyticsapi:/edx/app/analyticsapi/:ro
