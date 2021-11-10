@@ -1,6 +1,8 @@
 """Development settings and globals."""
 
+from ..devstack import *
 
+{% include "insights/apps/analyticsapi/settings/partials/common.py" %}
 
 
 from os.path import join, normpath
@@ -17,7 +19,7 @@ DEBUG = True
 
 ########## EMAIL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ########## END EMAIL CONFIGURATION
 
 
@@ -62,11 +64,11 @@ DATABASES = {
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#     }
+# }
 ########## END CACHE CONFIGURATION
 
 
@@ -84,7 +86,7 @@ SWAGGER_SETTINGS = {
 
 # These two settings are used in generate_fake_course_data.py.
 # Replace with correct values to generate local fake video data.
-LMS_BASE_URL = 'http://localhost:18000/'  # the base URL for your running local LMS instance
+LMS_BASE_URL = 'http://{{ LMS_HOST }}/'  # the base URL for your running local LMS instance
 COURSE_BLOCK_API_AUTH_TOKEN = 'paste auth token here'  # see README for instructions on how to configure this value
 
 # In Insights, we run this API as a separate service called "analyticsapi" to run acceptance/integration tests. Docker
@@ -92,11 +94,11 @@ COURSE_BLOCK_API_AUTH_TOKEN = 'paste auth token here'  # see README for instruct
 # However, in Django 1.10.3, the HTTP_HOST header of requests started to be checked against the ALLOWED_HOSTS setting
 # even in DEBUG=True mode. Here, we add the Docker service name "analyticsapi" to the default set of local allowed
 # hosts.
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', 'analyticsapi', 'host.docker.internal']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', 'analyticsapi', 'host.docker.internal', "{{ ANALYTICSAPI_HOST }}"]
 
 JWT_AUTH.update({
     'JWT_SECRET_KEY': 'lms-secret',
-    'JWT_ISSUER': 'http://localhost:18000/oauth2',
+    'JWT_ISSUER': 'http://lms:8000/oauth2',
     'JWT_AUDIENCE': None,
     'JWT_VERIFY_AUDIENCE': False,
     'JWT_PUBLIC_SIGNING_JWK_SET': (
@@ -116,7 +118,7 @@ CORS_ALLOW_HEADERS = corsheaders_default_headers + (
 CORS_ALLOW_CREDENTIALS = True
 
 # Default elasticsearch port when running locally
-ELASTICSEARCH_LEARNERS_HOST = environ.get("ELASTICSEARCH_LEARNERS_HOST", 'http://localhost:9223/')
+ELASTICSEARCH_LEARNERS_HOST = "{{ ELASTICSEARCH_HOST }}"
 ELASTICSEARCH_LEARNERS_INDEX = 'roster_entry_001'
 ELASTICSEARCH_LEARNERS_INDEX_ALIAS = 'roster_entry'
 ELASTICSEARCH_LEARNERS_UPDATE_INDEX = 'index_update'
@@ -125,53 +127,50 @@ ELASTICSEARCH_LEARNERS_UPDATE_INDEX = 'index_update'
 
 """Devstack settings."""
 
-import os
-
-from analyticsdataserver.settings.local import *
 
 ########## DATABASE CONFIGURATION
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'analytics-api',
-        'USER': 'api001',
-        'PASSWORD': 'password',
-        'HOST': 'edx.devstack.mysql',
-        'PORT': '3306',
+        'NAME': '{{ ANALYTICSAPI_MYSQL_DATABASE }}',
+        'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
     },
-    'analytics_v1': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'reports_v1',
-        'USER': 'api001',
-        'PASSWORD': 'password',
-        'HOST': 'edx.devstack.mysql',
-        'PORT': '3306',
-    },
+    # 'analytics_v1': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'reports_v1',
+    #     'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
+    #     'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+    #     'HOST': '{{  }}',
+    #     'PORT': '3306',
+    # },
     'analytics': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'reports',
-        'USER': 'reports001',
-        'PASSWORD': 'password',
-        'HOST': 'edx.devstack.mysql',
-        'PORT': '3306',
+        'NAME': '{{ REPORTS_MYSQL_DATABASE }}',
+        'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
     }
 }
 
-DB_OVERRIDES = dict(
-    USER=os.environ.get('DB_USER', DATABASES['default']['USER']),
-    PASSWORD=os.environ.get('DB_PASSWORD', DATABASES['default']['PASSWORD']),
-    HOST=os.environ.get('DB_HOST', DATABASES['default']['HOST']),
-    PORT=os.environ.get('DB_PORT', DATABASES['default']['PORT']),
-)
+# DB_OVERRIDES = dict(
+#     USER=os.environ.get('DB_USER', DATABASES['default']['USER']),
+#     PASSWORD=os.environ.get('DB_PASSWORD', DATABASES['default']['PASSWORD']),
+#     HOST=os.environ.get('DB_HOST', DATABASES['default']['HOST']),
+#     PORT=os.environ.get('DB_PORT', DATABASES['default']['PORT']),
+# )
 
-for override, value in DB_OVERRIDES.items():
-    DATABASES['default'][override] = value
-    DATABASES['analytics'][override] = value
-    DATABASES['analytics_v1'][override] = value
+# for override, value in DB_OVERRIDES.items():
+#     DATABASES['default'][override] = value
+#     DATABASES['analytics'][override] = value
+#     DATABASES['analytics_v1'][override] = value
 ########## END DATABASE CONFIGURATION
 
-ELASTICSEARCH_LEARNERS_HOST = os.environ.get('ELASTICSEARCH_LEARNERS_HOST', 'edx.devstack.elasticsearch')
+# ELASTICSEARCH_LEARNERS_HOST = os.environ.get('ELASTICSEARCH_LEARNERS_HOST', 'edx.devstack.elasticsearch')
 
-ALLOWED_HOSTS += ['edx.devstack.analyticsapi']
+# ALLOWED_HOSTS += ['{{edx.devstack.analyticsapi}}']
 
-LMS_BASE_URL = "http://edx.devstack.lms:18000/"
+LMS_BASE_URL = "http://{{ LMS_HOST }}"

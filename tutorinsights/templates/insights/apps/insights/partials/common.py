@@ -353,8 +353,8 @@ SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'email']
 SOCIAL_AUTH_STRATEGY = 'auth_backends.strategies.EdxDjangoStrategy'
 
 # Set these to the correct values for your OAuth2 provider (e.g., devstack)
-SOCIAL_AUTH_EDX_OAUTH2_KEY = "insights-sso-key"
-SOCIAL_AUTH_EDX_OAUTH2_SECRET = "insights-sso-secret"
+SOCIAL_AUTH_EDX_OAUTH2_KEY = "{{ INSIGHTS_OAUTH2_KEY }}"
+SOCIAL_AUTH_EDX_OAUTH2_SECRET = "{{ INSIGHTS_OAUTH2_SECRET }}"
 SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "http://lms:8000"
 SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "http://lms:8000"
 SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "http://lms:8000/logout"

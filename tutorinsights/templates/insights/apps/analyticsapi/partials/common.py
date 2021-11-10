@@ -6,23 +6,23 @@ from os import environ
 from os.path import abspath, basename, dirname, join, normpath
 from sys import stderr
 
-from enterprise_data_roles.constants import (
-    ENTERPRISE_DATA_ADMIN_ROLE,
-    SYSTEM_ENTERPRISE_ADMIN_ROLE,
-    SYSTEM_ENTERPRISE_OPERATOR_ROLE,
-)
+# from enterprise_data_roles.constants import (
+#     ENTERPRISE_DATA_ADMIN_ROLE,
+#     SYSTEM_ENTERPRISE_ADMIN_ROLE,
+#     SYSTEM_ENTERPRISE_OPERATOR_ROLE,
+# )
 
 from analytics_data_api.constants.engagement_events import DISCUSSION
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
-DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+# DJANGO_ROOT = dirname(dirname(abspath(__file__)))
 
 # Absolute filesystem path to the top-level project folder:
-SITE_ROOT = dirname(DJANGO_ROOT)
+# SITE_ROOT = dirname(DJANGO_ROOT)
 
 # Site name:
-SITE_NAME = basename(DJANGO_ROOT)
+# SITE_NAME = basename(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 
 
@@ -52,112 +52,112 @@ DEFAULT_MYSQL_OPTIONS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'analytics-api',
+        'NAME': '{{ ANALYTICSAPI_MYSQL_DATABASE }}',
         'OPTIONS': DEFAULT_MYSQL_OPTIONS,
-        'PASSWORD': 'password',
-        'PORT': '3306',
-        'USER': 'api001',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
         'ATOMIC_REQUESTS': False,
     },
-    'reports_v1': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'reports_v1',
-        'OPTIONS': DEFAULT_MYSQL_OPTIONS,
-        'PASSWORD': 'password',
-        'PORT': '3306',
-        'USER': 'reports001',
-    },
+    # 'reports_v1': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'HOST': 'localhost',
+    #     'NAME': 'reports_v1',
+    #     'OPTIONS': DEFAULT_MYSQL_OPTIONS,
+    #     'PASSWORD': 'password',
+    #     'PORT': '3306',
+    #     'USER': 'reports001',
+    # },
     'reports': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
         'NAME': 'reports',
         'OPTIONS': DEFAULT_MYSQL_OPTIONS,
-        'PASSWORD': 'password',
-        'PORT': '3306',
-        'USER': 'reports001',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER}}',
     },
-    'enterprise': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'localhost',
-        'NAME': 'enterprise_reporting',
-        'OPTIONS': DEFAULT_MYSQL_OPTIONS,
-        'PASSWORD': 'password',
-        'PORT': '3306',
-        'USER': 'api001',
-    }
+    # 'enterprise': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'HOST': 'localhost',
+    #     'NAME': 'enterprise_reporting',
+    #     'OPTIONS': DEFAULT_MYSQL_OPTIONS,
+    #     'PASSWORD': 'password',
+    #     'PORT': '3306',
+    #     'USER': 'api001',
+    # }
 }
 ########## END DATABASE CONFIGURATION
 
 ########## ELASTICSEARCH CONFIGURATION
-ELASTICSEARCH_LEARNERS_HOST = environ.get('ELASTICSEARCH_LEARNERS_HOST', None)
-ELASTICSEARCH_LEARNERS_INDEX = environ.get('ELASTICSEARCH_LEARNERS_INDEX', None)
-ELASTICSEARCH_LEARNERS_INDEX_ALIAS = environ.get('ELASTICSEARCH_LEARNERS_INDEX_ALIAS', None)
-ELASTICSEARCH_LEARNERS_UPDATE_INDEX = environ.get('ELASTICSEARCH_LEARNERS_UPDATE_INDEX', None)
+ELASTICSEARCH_LEARNERS_HOST = "{{ ELASTICSEARCH_HOST }}"
+ELASTICSEARCH_LEARNERS_INDEX = "{{ INSIGHTS_ELASTICSEARCH_INDEX }}"
+# ELASTICSEARCH_LEARNERS_INDEX_ALIAS = environ.get('ELASTICSEARCH_LEARNERS_INDEX_ALIAS', None)
+ELASTICSEARCH_LEARNERS_UPDATE_INDEX = "{{ INSIGHTS_ELASTICSEARCH_UPDATE_INDEX }}"
 
 # access credentials for signing requests to AWS.
 # For more information see http://docs.aws.amazon.com/general/latest/gr/signing_aws_api_requests.html
-ELASTICSEARCH_AWS_ACCESS_KEY_ID = None
-ELASTICSEARCH_AWS_SECRET_ACCESS_KEY = None
+# ELASTICSEARCH_AWS_ACCESS_KEY_ID = None
+# ELASTICSEARCH_AWS_SECRET_ACCESS_KEY = None
 # override the default elasticsearch connection class and useful for signing certificates
 # e.g. 'analytics_data_api.v0.connections.BotoHttpConnection'
-ELASTICSEARCH_CONNECTION_CLASS = None
-# only needed with BotoHttpConnection, e.g. 'us-east-1'
-ELASTICSEARCH_CONNECTION_DEFAULT_REGION = None
+# ELASTICSEARCH_CONNECTION_CLASS = None
+# # only needed with BotoHttpConnection, e.g. 'us-east-1'
+# ELASTICSEARCH_CONNECTION_DEFAULT_REGION = None
 
-DEFAULT_ELASTICSEARCH_INDEX_SETTINGS = {
-    'number_of_shards': 1,
-    'number_of_replicas': 0
-}
-ELASTICSEARCH_INDEX_SETTINGS = environ.get('ELASTICSEARCH_INDEX_SETTINGS', DEFAULT_ELASTICSEARCH_INDEX_SETTINGS)
+# DEFAULT_ELASTICSEARCH_INDEX_SETTINGS = {
+#     'number_of_shards': 1,
+#     'number_of_replicas': 0
+# }
+# ELASTICSEARCH_INDEX_SETTINGS = environ.get('ELASTICSEARCH_INDEX_SETTINGS', DEFAULT_ELASTICSEARCH_INDEX_SETTINGS)
 ########## END ELASTICSEARCH CONFIGURATION
 
 ########## GENERAL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'en-us'
+# # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
+# LANGUAGE_CODE = 'en-us'
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-SITE_ID = 1
+# # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+# SITE_ID = 1
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
-USE_I18N = False
+# # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
+# USE_I18N = False
 
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
-USE_L10N = False
+# # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
+# USE_L10N = False
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-USE_TZ = True
+# USE_TZ = True
 ########## END GENERAL CONFIGURATION
 
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
+# STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (
-    normpath(join(SITE_ROOT, 'static')),
-)
+# # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+# STATICFILES_DIRS = (
+#     normpath(join(SITE_ROOT, 'static')),
+# )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
-STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-)
+# STATICFILES_FINDERS = (
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+# )
 ########## END STATIC FILE CONFIGURATION
 
 
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = r"g)rke*$-ox1yursa_l!rjnh6tn!pd+qs^8i03xb0!#50#zhb%k"
+SECRET_KEY = "{{ SECRET_KEY }}"
 ########## END SECRET CONFIGURATION
 
 
@@ -170,35 +170,35 @@ ALLOWED_HOSTS = []
 
 ########## FIXTURE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (
-    normpath(join(SITE_ROOT, 'fixtures')),
-)
+# FIXTURE_DIRS = (
+#     normpath(join(SITE_ROOT, 'fixtures')),
+# )
 ########## END FIXTURE CONFIGURATION
 
 
 ########## TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            normpath(join(SITE_ROOT, 'templates')),
-        ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
-            ],
-        },
-    }
-]
+# TEMPLATES = [
+#     {
+#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#         'DIRS': [
+#             normpath(join(SITE_ROOT, 'templates')),
+#         ],
+#         'APP_DIRS': True,
+#         'OPTIONS': {
+#             'context_processors': [
+#                 'django.contrib.auth.context_processors.auth',
+#                 'django.template.context_processors.debug',
+#                 'django.template.context_processors.i18n',
+#                 'django.template.context_processors.media',
+#                 'django.template.context_processors.static',
+#                 'django.template.context_processors.tz',
+#                 'django.contrib.messages.context_processors.messages',
+#                 'django.template.context_processors.request',
+#             ],
+#         },
+#     }
+# ]
 ########## END TEMPLATE CONFIGURATION
 
 
@@ -239,44 +239,44 @@ ROOT_URLCONF = '%s.urls' % SITE_NAME
 
 
 ########## APP CONFIGURATION
-DJANGO_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.admin',
-)
+# DJANGO_APPS = (
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.sites',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     'django.contrib.admin',
+# )
 
-THIRD_PARTY_APPS = (
-    'release_util',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_framework_jwt',
-    'django_countries',
-    'drf_yasg',
-    'edx_api_doc_tools',
-    'storages',
-    'enterprise_data',
-    'rules.apps.AutodiscoverRulesConfig',
-    'corsheaders',
-    'waffle',
-)
+# THIRD_PARTY_APPS = (
+#     'release_util',
+#     'rest_framework',
+#     'rest_framework.authtoken',
+#     'rest_framework_jwt',
+#     'django_countries',
+#     'drf_yasg',
+#     'edx_api_doc_tools',
+#     'storages',
+#     'enterprise_data',
+#     'rules.apps.AutodiscoverRulesConfig',
+#     'corsheaders',
+#     'waffle',
+# )
 
-LOCAL_APPS = (
-    'analytics_data_api',
-    'analytics_data_api.v0',
-    'enterprise_data_roles',
-)
+# LOCAL_APPS = (
+#     'analytics_data_api',
+#     'analytics_data_api.v0',
+#     'enterprise_data_roles',
+# )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+# INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-AUTHENTICATION_BACKENDS = [
-    'rules.permissions.ObjectPermissionBackend',
-    'django.contrib.auth.backends.ModelBackend',
-]
+# AUTHENTICATION_BACKENDS = [
+#     'rules.permissions.ObjectPermissionBackend',
+#     'django.contrib.auth.backends.ModelBackend',
+# ]
 ########## END APP CONFIGURATION
 
 
@@ -344,7 +344,7 @@ LOGGING = {
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+# WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
 
 
@@ -379,9 +379,9 @@ REST_FRAMEWORK = {
 
 ########## ANALYTICS DATA API CONFIGURATION
 
-ANALYTICS_DATABASE = 'reports'
+ANALYTICS_DATABASE = '{{ REPORTS_MYSQL_DATABASE }}'
 # Currently unused, V1 database will support migration to new backend data source
-ANALYTICS_DATABASE_V1 = 'reports_v1'
+# ANALYTICS_DATABASE_V1 = 'reports_v1'
 DATABASE_ROUTERS = ['analyticsdataserver.router.AnalyticsApiRouter']
 ENTERPRISE_REPORTING_DB_ALIAS = 'enterprise'
 
@@ -393,7 +393,7 @@ LMS_USER_ACCOUNT_BASE_URL = None
 # settings for report downloads
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 MEDIA_ROOT = normpath(join(SITE_ROOT, 'static', 'reports'))
-MEDIA_URL = 'http://localhost:8100/static/reports/'
+MEDIA_URL = 'http://{{ ANALYTICSAPI_HOST }}/static/reports/'
 COURSE_REPORT_FILE_LOCATION_TEMPLATE = '{course_id}_{report_name}.csv'
 ENABLED_REPORT_IDENTIFIERS = ('problem_response',)
 REPORT_DOWNLOAD_BACKEND = {
@@ -414,25 +414,48 @@ AGGREGATE_PAGE_SIZE = 10
 # to course_summaries/
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
-JWT_AUTH = {
-    'JWT_ALGORITHM': 'HS256',
-    'JWT_AUDIENCE': 'lms-key',
-    'JWT_AUTH_COOKIE': 'edx-jwt-cookie',
-    'JWT_ISSUER': [
-        {
-            'AUDIENCE': 'SET-ME-PLEASE',
-            'ISSUER': 'http://127.0.0.1:8000/oauth2',
-            'SECRET_KEY': 'SET-ME-PLEASE'
-        }
-    ],
-    'JWT_DECODE_HANDLER': 'edx_rest_framework_extensions.auth.jwt.decoder.jwt_decode_handler',
-    'JWT_VERIFY_AUDIENCE': False,
-    'JWT_AUTH_COOKIE': 'edx-jwt-cookie',
-    'JWT_PUBLIC_SIGNING_JWK_SET': None,
-    'JWT_AUTH_COOKIE_HEADER_PAYLOAD': 'edx-jwt-cookie-header-payload',
-    'JWT_AUTH_COOKIE_SIGNATURE': 'edx-jwt-cookie-signature',
-    'JWT_AUTH_HEADER_PREFIX': 'JWT',
-}
+{% set jwt_rsa_key = rsa_import_key(JWT_RSA_PRIVATE_KEY) %}
+JWT_AUTH["JWT_ISSUER"] = "{{ JWT_COMMON_ISSUER }}"
+JWT_AUTH["JWT_AUDIENCE"] = "{{ JWT_COMMON_AUDIENCE }}"
+JWT_AUTH["JWT_SECRET_KEY"] = "{{ JWT_COMMON_SECRET_KEY }}"
+JWT_AUTH["JWT_PUBLIC_SIGNING_JWK_SET"] = json.dumps(
+    {
+        "keys": [
+            {
+                "kid": "openedx",
+                "kty": "RSA",
+                "e": "{{ jwt_rsa_key.e|long_to_base64 }}",
+                "n": "{{ jwt_rsa_key.n|long_to_base64 }}",
+            }
+        ]
+    }
+)
+JWT_AUTH["JWT_ISSUERS"] = [
+    {
+        "ISSUER": "{{ JWT_COMMON_ISSUER }}",
+        "AUDIENCE": "{{ JWT_COMMON_AUDIENCE }}",
+        "SECRET_KEY": "{{ OPENEDX_SECRET_KEY }}"
+    }
+]
+# JWT_AUTH = {
+#     'JWT_ALGORITHM': 'HS256',
+#     'JWT_AUDIENCE': 'lms-key',
+#     'JWT_AUTH_COOKIE': 'edx-jwt-cookie',
+#     'JWT_ISSUER': [
+#         {
+#             'AUDIENCE': 'SET-ME-PLEASE',
+#             'ISSUER': 'http://127.0.0.1:8000/oauth2',
+#             'SECRET_KEY': 'SET-ME-PLEASE'
+#         }
+#     ],
+#     'JWT_DECODE_HANDLER': 'edx_rest_framework_extensions.auth.jwt.decoder.jwt_decode_handler',
+#     'JWT_VERIFY_AUDIENCE': False,
+#     'JWT_AUTH_COOKIE': 'edx-jwt-cookie',
+#     'JWT_PUBLIC_SIGNING_JWK_SET': None,
+#     'JWT_AUTH_COOKIE_HEADER_PAYLOAD': 'edx-jwt-cookie-header-payload',
+#     'JWT_AUTH_COOKIE_SIGNATURE': 'edx-jwt-cookie-signature',
+#     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+# }
 
 ########## END ANALYTICS DATA API CONFIGURATION
 
@@ -448,28 +471,43 @@ SYSTEM_TO_FEATURE_ROLE_MAPPING = {
 }
 
 ########## EDX ENTERPRISE DATA CONFIGURATION
-API_AUTH_TOKEN = 'put-your-api-token-here'
+API_AUTH_TOKEN = '{{ API_AUTH_TOKEN }}'
 CSRF_COOKIE_SECURE = False
 
 EXTRA_APPS = []
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
     }
 }
-SOCIAL_AUTH_EDX_OAUTH2_KEY = "analytics_api-sso-key"
-SOCIAL_AUTH_EDX_OAUTH2_SECRET = "-sso-secret"
-SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "http://127.0.0.1:8000"
-SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "http://127.0.0.1:8000"
-SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "http://127.0.0.1:8000/logout"
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+#     }
+# }
+SOCIAL_AUTH_EDX_OAUTH2_KEY = "{{ ANALYTICSAPI_OAUTH2_KEY }}"
+SOCIAL_AUTH_EDX_OAUTH2_SECRET = "{{ ANALYTICSAPI_OAUTH2_SECRET }}"
+SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "http://lms:8000"
+SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "http://lms:8000"
+SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "http://lms:8000/logout"
 
-BACKEND_SERVICE_EDX_OAUTH2_KEY = "analytics_api-backend-service-key"
-BACKEND_SERVICE_EDX_OAUTH2_SECRET = "analytics_api-backend-service-secret"
-BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "http://127.0.0.1:8000/oauth2"
+BACKEND_SERVICE_EDX_OAUTH2_KEY = "{{ ANALYTICSAPI_BACKEND_OAUTH2_KEY }}"
+BACKEND_SERVICE_EDX_OAUTH2_SECRET = "{{ ANALYTICSAPI_BACKEND_OAUTH2_SECRET }}"
+BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "http://lms:8000/oauth2"
+
+# SOCIAL_AUTH_EDX_OAUTH2_KEY = "analytics_api-sso-key"
+# SOCIAL_AUTH_EDX_OAUTH2_SECRET = "-sso-secret"
+# SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "http://127.0.0.1:8000"
+# SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "http://127.0.0.1:8000"
+# SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "http://127.0.0.1:8000/logout"
+
+# BACKEND_SERVICE_EDX_OAUTH2_KEY = "analytics_api-backend-service-key"
+# BACKEND_SERVICE_EDX_OAUTH2_SECRET = "analytics_api-backend-service-secret"
+# BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "http://127.0.0.1:8000/oauth2"
 EDX_DRF_EXTENSIONS = {
-    "OAUTH2_USER_INFO_URL": "http://127.0.0.1:8000/oauth2/user_info"
+    "OAUTH2_USER_INFO_URL": "http://lms:8000/oauth2/user_info"
 }
 API_ROOT = None
 MEDIA_STORAGE_BACKEND = {
@@ -478,14 +516,14 @@ MEDIA_STORAGE_BACKEND = {
     'MEDIA_URL': MEDIA_URL
 }
 # Set these to the correct values for your OAuth2/OpenID Connect provider (e.g., devstack)
-SOCIAL_AUTH_EDX_OIDC_KEY = 'analytics_api-key'
-SOCIAL_AUTH_EDX_OIDC_SECRET = 'analytics_api-secret'
-SOCIAL_AUTH_EDX_OIDC_URL_ROOT = 'http://127.0.0.1:8000/oauth2'
-SOCIAL_AUTH_EDX_OIDC_LOGOUT_URL = 'http://127.0.0.1:8000/logout'
-SOCIAL_AUTH_EDX_OIDC_ID_TOKEN_DECRYPTION_KEY = 'analytics_api-secret'
+SOCIAL_AUTH_EDX_OIDC_KEY = "{{ ANALYTICSAPI_OAUTH2_KEY }}"
+SOCIAL_AUTH_EDX_OIDC_SECRET = "{{ ANALYTICSAPI_OAUTH2_SECRET }}"
+SOCIAL_AUTH_EDX_OIDC_URL_ROOT = 'http://lms:8000/oauth2'
+SOCIAL_AUTH_EDX_OIDC_LOGOUT_URL = 'http://lms:8000/logout'
+SOCIAL_AUTH_EDX_OIDC_ID_TOKEN_DECRYPTION_KEY = "{{ ANALYTICSAPI_OAUTH2_SECRET }}"
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
-SOCIAL_AUTH_EDX_OIDC_PUBLIC_URL_ROOT = 'http://127.0.0.1:8000/oauth2'
-SOCIAL_AUTH_EDX_OIDC_ISSUER = 'http://127.0.0.1:8000/oauth2'
+SOCIAL_AUTH_EDX_OIDC_PUBLIC_URL_ROOT = 'http://lms:8000/oauth2'
+SOCIAL_AUTH_EDX_OIDC_ISSUER = 'http://lms:8000/oauth2'
 
 ########## ENTERPRISE LEARNER ENGAGEMENT REPORTING
 EXCLUDED_ENGAGEMENT_ENTITY_TYPES = [DISCUSSION]

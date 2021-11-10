@@ -14,8 +14,14 @@ config = {
 
 hooks = {
     "init": ["mysql", "lms", "analyticsapi", "insights"],
-    "insights": "{{ INSIGHTS_DOCKER_IMAGE }}",
-    "analyticsapi": "{{ ANALYTICS_API_DOCKER_IMAGE }}",
+    "build-image": {
+        "insights": "{{ INSIGHTS_DOCKER_IMAGE }}",
+        "analyticsapi": "{{ ANALYTICS_API_DOCKER_IMAGE }}",
+    },
+    "remote-image": {
+        "insights": "{{ INSIGHTS_DOCKER_IMAGE }}",
+        "analyticsapi": "{{ ANALYTICS_API_DOCKER_IMAGE }}",
+    },
 }
 
 
