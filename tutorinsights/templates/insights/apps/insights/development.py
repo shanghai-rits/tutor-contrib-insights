@@ -2,7 +2,7 @@ from ..devstack import *
 
 # import os
 
-{% include "insights/apps/insights/settings/partials/common.py" %}
+{% include "insights/apps/insights/partials/common.py" %}
 
 ########## DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug

@@ -2,7 +2,7 @@
 
 from ..production import *
 
-{% include "insights/apps/analyticsapi/settings/partials/common.py" %}
+{% include "insights/apps/analyticsapi/partials/common.py" %}
 
 from os import environ
 

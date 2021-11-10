@@ -1,6 +1,6 @@
 from ..production import *
 
-{% include "insights/apps/insights/settings/partials/common.py" %}
+{% include "insights/apps/insights/partials/common.py" %}
 
 """Production settings and globals."""
 
@@ -15,17 +15,6 @@ from ..production import *
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
 ALLOWED_HOSTS = ['*']
 ########## END HOST CONFIGURATION
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "{{ DISCOVERY_MYSQL_DATABASE }}",
-#         "USER": "{{ DISCOVERY_MYSQL_USERNAME }}",
-#         "PASSWORD": "{{ DISCOVERY_MYSQL_PASSWORD }}",
-#         "HOST": "{{ MYSQL_HOST }}",
-#         "PORT": "{{ MYSQL_PORT }}",
-#     }
-# }
 
 # DB_OVERRIDES = dict(
 #     PASSWORD=environ.get('DB_MIGRATION_PASS', DATABASES['default']['PASSWORD']),

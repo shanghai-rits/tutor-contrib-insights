@@ -2,7 +2,7 @@
 
 from ..devstack import *
 
-{% include "insights/apps/analyticsapi/settings/partials/common.py" %}
+{% include "insights/apps/analyticsapi/partials/common.py" %}
 
 
 from os.path import join, normpath
@@ -80,9 +80,9 @@ ANALYTICS_DATABASE_V1 = 'analytics'
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-SWAGGER_SETTINGS = {
-    'api_key': 'edx'
-}
+# SWAGGER_SETTINGS = {
+#     'api_key': "openedx"
+# }
 
 # These two settings are used in generate_fake_course_data.py.
 # Replace with correct values to generate local fake video data.
@@ -138,14 +138,6 @@ DATABASES = {
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
     },
-    # 'analytics_v1': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'reports_v1',
-    #     'USER': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_USER }}',
-    #     'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
-    #     'HOST': '{{  }}',
-    #     'PORT': '3306',
-    # },
     'analytics': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}',
@@ -168,9 +160,5 @@ DATABASES = {
 #     DATABASES['analytics'][override] = value
 #     DATABASES['analytics_v1'][override] = value
 ########## END DATABASE CONFIGURATION
-
-# ELASTICSEARCH_LEARNERS_HOST = os.environ.get('ELASTICSEARCH_LEARNERS_HOST', 'edx.devstack.elasticsearch')
-
-# ALLOWED_HOSTS += ['{{edx.devstack.analyticsapi}}']
 
 LMS_BASE_URL = "http://{{ LMS_HOST }}"
