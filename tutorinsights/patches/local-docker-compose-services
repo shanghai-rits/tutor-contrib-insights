@@ -11,7 +11,7 @@ insights:
       DB_USER: {{ INSIGHTS_MYSQL_USER }}
       DB_PASSWORD: {{ INSIGHTS_MYSQL_PASSWORD }}
       LMS_HOST: {{ LMS_HOST }}
-    DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
+      DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
   image: {{ INSIGHTS_DOCKER_IMAGE }}
   volumes:
     - ../../data/insights:/openedx/insights/:ro
