@@ -6,10 +6,10 @@ insights:
   restart: unless-stopped
   environment:
       DB_HOST: {{ MYSQL_HOST }}
-      DB_NAME: dashboard
+      DB_NAME: {{ MYSQL_DASHBOARD_DATABASE }}
       DB_PORT: {{ MYSQL_PORT }}
-      DB_USER: analytics001
-      DB_PASSWORD: password
+      DB_USER: {{ MYSQL_ANALYTICS_USER }}
+      DB_PASSWORD: {{ MYSQL_PASSWORD }}
       LMS_HOST: {{ LMS_HOST }}
     DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
   image: {{ INSIGHTS_DOCKER_IMAGE }}
@@ -26,8 +26,8 @@ analyticsapi:
   environment:
     DB_HOST: {{ MYSQL_HOST }}
     DB_PORT: {{ MYSQL_PORT }}
-    DB_USER: analytics001
-    DB_PASSWORD: password
+    DB_USER: {{ MYSQL_ANALYTICS_USER }}
+    DB_PASSWORD: {{ MYSQL_PASSWORD }
     ELASTICSEARCH_LEARNERS_HOST: {{ ELASTICSEARCH_HOST }}
   volumes:
     - ../../data/analyticsapi:/openedx/analyticsapi/:ro

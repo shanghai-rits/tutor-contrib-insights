@@ -8,9 +8,15 @@ templates = pkg_resources.resource_filename(
     "tutorinsights", "templates"
 )
 
-config = {}
+config = {
+    
+}
 
-hooks = {}
+hooks = {
+    "init": ["mysql", "lms", "analyticsapi", "insights"],
+    "insights": "{{ INSIGHTS_DOCKER_IMAGE }}",
+    "analyticsapi": "{{ ANALYTICS_API_DOCKER_IMAGE }}",
+}
 
 
 def patches():
