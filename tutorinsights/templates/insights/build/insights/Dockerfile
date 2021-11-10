@@ -1,0 +1,32 @@
+FROM docker.io/ubuntu:20.04 as openedx
+
+RUN apt update && \
+  apt-get install -y software-properties-common && \
+  apt-add-repository -y ppa:deadsnakes/ppa && apt-get update && \
+  apt-get install -y curl && \
+  apt-get upgrade -qy && \
+  apt install -y git-core language-pack-en build-essential python3.8-dev python3.8-distutils libmysqlclient-dev && \
+  curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py && \
+  python3.8 get-pip.py && python3.8 -m pip install --upgrade pip setuptools && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+ENV ANALYTICS_DASHBOARD_CFG /openedx/insights.yml
+
+WORKDIR /openedx/analytics_dashboard
+COPY requirements /openedx/analytics_dashboard/requirements
+RUN python3.8 -m pip install -r requirements/production.txt
+
+EXPOSE 8000
+CMD gunicorn -b 0.0.0.0:8000 --workers 2 --timeout=300 analytics_dashboard.wsgi:application
+
+RUN useradd -m --shell /bin/false app
+USER app
+COPY . /openedx/analytics_dashboard
+
+FROM openedx as edx.org
+RUN python3.8 -m pip install newrelic
+CMD newrelic-admin run-program gunicorn -b 127.0.0.1:8000 --workers 2 --timeout=300 analytics_dashboard.wsgi:application

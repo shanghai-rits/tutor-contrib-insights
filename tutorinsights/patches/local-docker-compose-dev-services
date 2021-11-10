@@ -1,0 +1,20 @@
+insights:
+  environment:
+    DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.development
+  command: ./manage.py runserver 0.0.0.0:18110
+  ports:
+    - "18110:18110"
+  networks:
+    default:
+      aliases:
+        - "{{ INSIGHTS_HOST }}"
+analyticsapi:
+  environment:
+    DJANGO_SETTINGS_MODULE: analyticsdataserver.settings.tutor.development
+  command: ./manage.py runserver 0.0.0.0:19001
+  ports:
+    - "19001:19001"
+  networks:
+    default:
+      aliases:
+        - "{{ ANALYTICSAPI_HOST }}"

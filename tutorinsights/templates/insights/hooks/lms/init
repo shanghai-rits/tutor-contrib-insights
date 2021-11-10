@@ -1,0 +1,20 @@
+# Create the service user.
+./manage.py lms manage_user insights_worker insights_worker@example.com --staff --superuser
+
+# Create the DOT applications - one for single sign-on and one for backend service IDA-to-IDA authentication.
+./manage.py lms create_dot_application \
+    --grant-type authorization-code \
+    --skip-authorization \
+    --redirect-uris "http://{{ INSIGHTS_HOST }}:8000/complete/edx-oauth2/" \
+    --client-id "{{insights-sso-key}}" \
+    --client-secret "insights-sso-secret" \
+    --scopes "user_id" \
+    insights-sso \
+    insights_worker 
+
+./manage.py lms create_dot_application \
+    --grant-type client-credentials \
+    --client-id "insights-backend-service-key" \
+    --client-secret "insights-backend-service-secret" \
+    insights-backend-service \
+    insights_worker

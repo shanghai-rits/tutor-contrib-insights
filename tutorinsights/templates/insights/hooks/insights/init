@@ -1,0 +1,10 @@
+make develop
+
+# # Install Insights npm dependencies
+npm install && ./npm-post-install.sh
+
+# export DJANGO_SETTINGS_MODULE="analytics_dashboard.settings.devstack"
+
+make migrate
+
+make static

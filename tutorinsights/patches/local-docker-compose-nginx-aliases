@@ -1,0 +1,2 @@
+- {{ INSIGHTS_HOST }}
+- {{ ANALYTICSAPI_HOST }}

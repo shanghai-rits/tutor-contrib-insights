@@ -1,0 +1,8 @@
+# Insights
+{{ INSIGHTS_HOST }}{% if not ENABLE_HTTPS %}:80{% endif %} {
+    reverse_proxy nginx:80
+}
+# Analytics API
+{{ ANALYTICSAPI_HOST }}{% if not ENABLE_HTTPS %}:80{% endif %} {
+    reverse_proxy nginx:80
+}

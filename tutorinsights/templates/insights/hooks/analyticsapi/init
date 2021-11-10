@@ -1,0 +1,9 @@
+make develop
+
+make migrate-all
+
+./manage.py set_api_key edx edx
+
+make loaddata
+
+make create_indices
