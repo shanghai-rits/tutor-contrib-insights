@@ -7,7 +7,7 @@ insights-job:
   depends_on: {{ [("lms", RUN_LMS), ("mysql", RUN_MYSQL)]|list_if }}
 
 analyticsapi-job:
-  image: {{ ANALYTICSAPI_DOCKER_IMAGE }}
+  image: {{ INSIGHTS_ANALYTICSAPI_DOCKER_IMAGE }}
   environment:
     DJANGO_SETTINGS_MODULE: analyticsdataserver.settings.tutor.production
   volumes:

@@ -17,7 +17,7 @@ insights:
     - ../../data/insights:/openedx/insights/:ro
 
 analyticsapi:
-  image: {{ ANALYTICSAPI_DOCKER_IMAGE }}
+  image: {{ INSIGHTS_ANALYTICSAPI_DOCKER_IMAGE }}
   hostname: analyticsapi
   depends_on:
     - mysql

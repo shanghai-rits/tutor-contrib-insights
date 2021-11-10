@@ -24,7 +24,7 @@ upstream analyticsapi-backend {
 }
 server {
   listen 80;
-  server_name {{ ANALYTICSAPI_HOST }};
+  server_name {{ INSIGHTS_ANALYTICSAPI_HOST }};
 
   # Disables server version feedback on pages and in headers
   server_tokens off;

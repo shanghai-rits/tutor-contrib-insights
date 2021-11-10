@@ -17,4 +17,4 @@ analyticsapi:
   networks:
     default:
       aliases:
-        - "{{ ANALYTICSAPI_HOST }}"
+        - "{{ INSIGHTS_ANALYTICSAPI_HOST }}"

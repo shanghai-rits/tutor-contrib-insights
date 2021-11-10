@@ -87,14 +87,14 @@ SWAGGER_SETTINGS = {
 # These two settings are used in generate_fake_course_data.py.
 # Replace with correct values to generate local fake video data.
 LMS_BASE_URL = 'http://{{ LMS_HOST }}/'  # the base URL for your running local LMS instance
-COURSE_BLOCK_API_AUTH_TOKEN = '{{ ANALYTICSAPI_COURSE_BLOCK_API }}'  # see README for instructions on how to configure this value
+COURSE_BLOCK_API_AUTH_TOKEN = '{{ INSIGHTS_ANALYTICSAPI_COURSE_BLOCK_API }}'  # see README for instructions on how to configure this value
 
 # In Insights, we run this API as a separate service called "analyticsapi" to run acceptance/integration tests. Docker
 # saves the service name as a host in the Insights container so it can reach the API by requesting http://analyticsapi/.
 # However, in Django 1.10.3, the HTTP_HOST header of requests started to be checked against the ALLOWED_HOSTS setting
 # even in DEBUG=True mode. Here, we add the Docker service name "analyticsapi" to the default set of local allowed
 # hosts.
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', 'analyticsapi', 'host.docker.internal', "{{ ANALYTICSAPI_HOST }}"]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '::1', 'analyticsapi', 'host.docker.internal', "{{ INSIGHTS_ANALYTICSAPI_HOST }}"]
 
 JWT_AUTH.update({
     'JWT_SECRET_KEY': 'lms-secret',
@@ -132,8 +132,8 @@ ELASTICSEARCH_LEARNERS_UPDATE_INDEX = 'index_update'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ ANALYTICSAPI_MYSQL_DATABASE }}',
-        'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
+        'NAME': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_DATABASE }}',
+        'USER': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
@@ -141,7 +141,7 @@ DATABASES = {
     # 'analytics_v1': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'reports_v1',
-    #     'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
+    #     'USER': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_USER }}',
     #     'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
     #     'HOST': '{{  }}',
     #     'PORT': '3306',
@@ -149,7 +149,7 @@ DATABASES = {
     'analytics': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}',
-        'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
+        'USER': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
