@@ -1,8 +1,8 @@
 import os
-# from os.path import abspath, basename, dirname, join, normpath
+from os.path import abspath, basename, dirname, join, normpath
 # from sys import path
 
-# from configparser import ConfigParser
+from configparser import ConfigParser
 
 next_page='/'"""Common settings and globals."""
 
@@ -39,8 +39,8 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ INSIGHTS_MYSQL_DATABASE }}',
-        'USER': '{{ INSIGHTS_MYSQL_USERNAME }}',
+        'NAME': '{{ DASHBOARD_MYSQL_DATABASE }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
@@ -111,14 +111,17 @@ DATABASES = {
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = 'YOUR_SECRET_KEY_HERE'
+SECRET_KEY = '{{ SECRET_KEY }}'
 ########## END SECRET CONFIGURATION
 
 
 ########## SITE CONFIGURATION
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "{{ INSIGHTS_HOST }}",
+    "insights",
+]
 ########## END SITE CONFIGURATION
 
 
@@ -212,22 +215,22 @@ ALLOWED_HOSTS = []
 # )
 
 # Apps specific for this project go here.
-LOCAL_APPS = (
-    'analytics_dashboard.core',
-    'analytics_dashboard.courses',
-    'analytics_dashboard.help',
-    'soapbox',
-)
+# LOCAL_APPS = (
+#     'analytics_dashboard.core',
+#     'analytics_dashboard.courses',
+#     'analytics_dashboard.help',
+#     'soapbox',
+# )
 
-THIRD_PARTY_APPS = (
-    'release_util',
-    'rest_framework',
-    'social_django',
-    'webpack_loader'
-)
+# THIRD_PARTY_APPS = (
+#     'release_util',
+#     'rest_framework',
+#     'social_django',
+#     'webpack_loader'
+# )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
+# INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 ########## END APP CONFIGURATION
 
 
@@ -296,7 +299,7 @@ EMAIL_HOST = "{{ SMTP_HOST }}"
 EMAIL_PORT = "{{ SMTP_PORT }}"
 EMAIL_HOST_USER = "{{ SMTP_USERNAME }}"
 EMAIL_HOST_PASSWORD = "{{ SMTP_PASSWORD }}"
-EMAIL_USE_TLS = {{SMTP_USE_TLS}}
+EMAIL_USE_TLS = "{{ SMTP_USE_TLS }}"
 ########## END EMAIL CONFIG
 
 ########## LANDING PAGE -- URLs should be overridden for production deployments.
@@ -313,18 +316,18 @@ DOCUMENTATION_LOAD_ERROR_MESSAGE = f'<a href="{DOCUMENTATION_LOAD_ERROR_URL}" ta
 
 
 ########## DATA API CONFIGURATION
-DATA_API_URL = 'http://127.0.0.1:9001/api/v0'
-DATA_API_AUTH_TOKEN = 'changeme'
+DATA_API_URL = 'http://{{ ANALYTICSAPI_HOST }}/api/v0'
+DATA_API_AUTH_TOKEN = '{{ API_AUTH_TOKEN }}'
 ########## END DATA API CONFIGURATION
 
 # used to determine if a course ID is valid
 LMS_COURSE_VALIDATION_BASE_URL = None
 
 # used to construct the shortcut link to course modules
-LMS_COURSE_SHORTCUT_BASE_URL = 'URL_FOR_LMS_COURSE_LIST_PAGE'
+LMS_COURSE_SHORTCUT_BASE_URL = 'http://{ LMS_HOST }/courses'
 
 # used to construct the shortcut link to view/edit a course in Studio
-CMS_COURSE_SHORTCUT_BASE_URL = 'http://127.0.0.1:8000/courses/'
+CMS_COURSE_SHORTCUT_BASE_URL = 'http://{{ CMS_HOST }}/courses/'
 
 # Used to determine how dates and time are displayed in templates
 # The strings are intended for use with the django.utils.dateformat
@@ -343,7 +346,7 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Set to true if using SSL and running behind a proxy
-SOCIAL_AUTH_REDIRECT_IS_HTTPS = False
+SOCIAL_AUTH_REDIRECT_IS_HTTPS = {% if ENABLE_HTTPS %}True{% else %}False{% endif %}
 
 SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'email']
 
@@ -352,24 +355,24 @@ SOCIAL_AUTH_STRATEGY = 'auth_backends.strategies.EdxDjangoStrategy'
 # Set these to the correct values for your OAuth2 provider (e.g., devstack)
 SOCIAL_AUTH_EDX_OAUTH2_KEY = "insights-sso-key"
 SOCIAL_AUTH_EDX_OAUTH2_SECRET = "insights-sso-secret"
-SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "http://127.0.0.1:8000"
-SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "http://127.0.0.1:8000"
-SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "http://127.0.0.1:8000/logout"
+SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "http://lms:8000"
+SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "http://lms:8000"
+SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "http://lms:8000/logout"
 
-BACKEND_SERVICE_EDX_OAUTH2_KEY = "insights-backend-service-key"
-BACKEND_SERVICE_EDX_OAUTH2_SECRET = "insights-backend-service-secret"
-BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "http://127.0.0.1:8000/oauth2"
+BACKEND_SERVICE_EDX_OAUTH2_KEY = "{{ INSIGHTS_BACKEND_OAUTH2_KEY }}"
+BACKEND_SERVICE_EDX_OAUTH2_SECRET = "{{ INSIGHTS_BACKEND_OAUTH2_SECRET }}"
+BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "http://lms:8000/oauth2"
 
 # Enables a special view that, when accessed, creates and logs in a new user.
 # This should NOT be enabled for production deployments!
-ENABLE_AUTO_AUTH = False
+# ENABLE_AUTO_AUTH = False
 
 # Prefix for auto auth usernames. This value MUST be set in order for auto-auth to function. If it were not set
 # we would be unable to automatically remove all auto-auth users.
-AUTO_AUTH_USERNAME_PREFIX = 'AUTO_AUTH_'
+# AUTO_AUTH_USERNAME_PREFIX = 'AUTO_AUTH_'
 
 # Maximum time (in seconds) before course permissions expire and need to be refreshed
-COURSE_PERMISSIONS_TIMEOUT = 900
+# COURSE_PERMISSIONS_TIMEOUT = 900
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/courses/'
@@ -381,13 +384,14 @@ ENABLE_COURSE_PERMISSIONS = True
 ########## END AUTHENTICATION
 
 # The application and platform display names to be used in templates, emails, etc.
-PLATFORM_NAME = 'edx'
+PLATFORM_NAME = '{{ PLATFORM_NAME }}'
 APPLICATION_NAME = 'Insights'
 FULL_APPLICATION_NAME = f'{PLATFORM_NAME} {APPLICATION_NAME}'
 
 
 ########## DOCS/HELP CONFIGURATION
-DOCS_ROOT = join(SITE_ROOT, 'docs')
+# DOCS_ROOT = join(SITE_ROOT, 'docs')
+DOCS_ROOT = "http://{{ INSIGHTS_HOST }}/docs"
 
 # Load the docs config into memory when the server starts
 with open(join(DOCS_ROOT, "config.ini")) as config_file:
@@ -396,15 +400,15 @@ with open(join(DOCS_ROOT, "config.ini")) as config_file:
 ########## END DOCS/HELP CONFIGURATION
 
 ########## COURSE API
-COURSE_API_URL = 'http://127.0.0.1:8000/api/courses/v1/'
-GRADING_POLICY_API_URL = 'http://127.0.0.1:8000/api/grades/v1/'
+COURSE_API_URL = 'http://lms:8000/api/courses/v1/'
+GRADING_POLICY_API_URL = 'http://lms:8000/api/grades/v1/'
 
 # If no key is specified, the authenticated user's OAuth2 access token will be used.
 COURSE_API_KEY = None
 ########## END COURSE API
 
 ########## MODULE_PREVIEW
-MODULE_PREVIEW_URL = 'http://127.0.0.1:8000/xblock'
+MODULE_PREVIEW_URL = 'http://{{ LMS_HOST }}/xblock'
 ########## END MODULE_PREVIEW
 
 ########## EXTERNAL SERVICE TIMEOUTS
@@ -432,14 +436,14 @@ FOOTER_LINKS = (
 ########## END LINKS THAT SHOULD BE SHOWN IN FOOTER
 
 ########## REST FRAMEWORK CONFIGURATION
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-    ),
-    'DEFAULT_RENDERER_CLASSES': (
-        'rest_framework.renderers.JSONRenderer',
-    ),
-}
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.SessionAuthentication',
+#     ),
+#     'DEFAULT_RENDERER_CLASSES': (
+#         'rest_framework.renderers.JSONRenderer',
+#     ),
+# }
 ########## END REST FRAMEWORK CONFIGURATION
 
 ########## COURSE_ID_PATTERN
@@ -461,10 +465,10 @@ BLOCK_LEARNER_ANALYTICS_ORG_LIST = []
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-        'KEY_PREFIX': 'default_env-default_deployment-insights',
-        'LOCATION': '127.0.0.1:11211',
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "KEY_PREFIX": "insights",
+        "LOCATION": "redis://{% if REDIS_USERNAME and REDIS_PASSWORD %}{{ REDIS_USERNAME }}:{{ REDIS_PASSWORD }}{% endif %}@{{ REDIS_HOST }}:{{ REDIS_PORT }}/{{ CACHE_REDIS_DB }}",
     }
 }
 COURSE_SUMMARIES_CACHE_TIMEOUT = 3600  # 1 hour timeout
@@ -493,7 +497,7 @@ LANGUAGE_COOKIE_NAME = 'insights_language'
 CSRF_COOKIE_NAME = 'insights_csrftoken'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
-CSRF_COOKIE_SECURE = False
+# CSRF_COOKIE_SECURE = False
 ######### END CSRF COOKIE
 
 ########## SESSION COOKIE
@@ -506,7 +510,7 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 COURSE_SUMMARIES_IDS_CUTOFF = 500
 
-PRIVACY_POLICY_URL = 'http://example.com/privacy-policy'
+PRIVACY_POLICY_URL = 'http://{{ INSIGHTS_HOST }}/privacy-policy'
 
 ################################ Settings for JWTs ################################
 
@@ -516,5 +520,5 @@ JWT_AUTH = {
 
 # Required for Django 3.2 upgrade
 # See https://openedx.atlassian.net/wiki/spaces/AC/pages/3066626061/Django+3.2+Upgrade+Key+Changes
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-DEFAULT_HASHING_ALGORITHM = 'sha1'
+# DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+# DEFAULT_HASHING_ALGORITHM = 'sha1'

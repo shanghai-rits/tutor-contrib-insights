@@ -16,17 +16,28 @@ from ..production import *
 ALLOWED_HOSTS = ['*']
 ########## END HOST CONFIGURATION
 
-DB_OVERRIDES = dict(
-    PASSWORD=environ.get('DB_MIGRATION_PASS', DATABASES['default']['PASSWORD']),
-    ENGINE=environ.get('DB_MIGRATION_ENGINE', DATABASES['default']['ENGINE']),
-    USER=environ.get('DB_MIGRATION_USER', DATABASES['default']['USER']),
-    NAME=environ.get('DB_MIGRATION_NAME', DATABASES['default']['NAME']),
-    HOST=environ.get('DB_MIGRATION_HOST', DATABASES['default']['HOST']),
-    PORT=environ.get('DB_MIGRATION_PORT', DATABASES['default']['PORT']),
-)
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "{{ DISCOVERY_MYSQL_DATABASE }}",
+#         "USER": "{{ DISCOVERY_MYSQL_USERNAME }}",
+#         "PASSWORD": "{{ DISCOVERY_MYSQL_PASSWORD }}",
+#         "HOST": "{{ MYSQL_HOST }}",
+#         "PORT": "{{ MYSQL_PORT }}",
+#     }
+# }
 
-for override, value in DB_OVERRIDES.items():
-    DATABASES['default'][override] = value
+# DB_OVERRIDES = dict(
+#     PASSWORD=environ.get('DB_MIGRATION_PASS', DATABASES['default']['PASSWORD']),
+#     ENGINE=environ.get('DB_MIGRATION_ENGINE', DATABASES['default']['ENGINE']),
+#     USER=environ.get('DB_MIGRATION_USER', DATABASES['default']['USER']),
+#     NAME=environ.get('DB_MIGRATION_NAME', DATABASES['default']['NAME']),
+#     HOST=environ.get('DB_MIGRATION_HOST', DATABASES['default']['HOST']),
+#     PORT=environ.get('DB_MIGRATION_PORT', DATABASES['default']['PORT']),
+# )
+
+# for override, value in DB_OVERRIDES.items():
+#     DATABASES['default'][override] = value
 
 # Re-declare the full application name in case the components have been overridden.
 FULL_APPLICATION_NAME = f'{PLATFORM_NAME} {APPLICATION_NAME}'
