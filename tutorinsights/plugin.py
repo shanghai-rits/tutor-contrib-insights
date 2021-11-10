@@ -38,6 +38,7 @@ config = {
         "CACHE_REDIS_DB": "{{ OPENEDX_CACHE_REDIS_DB }}",
         "INSIGHTS_ELASTICSEARCH_INDEX": "learner",
         "INSIGHTS_ELASTICSEARCH_UPDATE_INDEX": "index_update",
+        "ANALYTICSAPI_COURSE_BLOCK_API": "",
     },
 }
 
