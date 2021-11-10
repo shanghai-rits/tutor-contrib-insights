@@ -63,7 +63,7 @@ HELP_URL = '#'
 
 ########## SEGMENT.IO
 # 'None' disables tracking.  This will be turned on for test and production.
-SEGMENT_IO_KEY = "{{ SEGMENT_WRITE_KEY }}"
+SEGMENT_IO_KEY = "{{ INSIGHTS_SEGMENT_WRITE_KEY }}"
 ########## END SEGMENT.IO
 
 # LOGGING = get_logger_config(debug=DEBUG, dev_env=True, local_loglevel='DEBUG')
@@ -84,7 +84,7 @@ DATA_API_AUTH_TOKEN = 'edx'
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = "{{ SECRET_KEY }}"
+SECRET_KEY = "{{ INSIGHTS_SECRET_KEY }}"
 ########## END SECRET CONFIGURATION
 
 ########## SESSION COOKIE

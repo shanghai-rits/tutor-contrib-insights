@@ -39,7 +39,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ DASHBOARD_MYSQL_DATABASE }}',
+        'NAME': '{{ INSIGHTS_DASHBOARD_MYSQL_DATABASE }}',
         'USER': '{{ INSIGHTS_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',
@@ -111,7 +111,7 @@ DATABASES = {
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = '{{ SECRET_KEY }}'
+SECRET_KEY = '{{ INSIGHTS_SECRET_KEY }}'
 ########## END SECRET CONFIGURATION
 
 
@@ -317,7 +317,7 @@ DOCUMENTATION_LOAD_ERROR_MESSAGE = f'<a href="{DOCUMENTATION_LOAD_ERROR_URL}" ta
 
 ########## DATA API CONFIGURATION
 DATA_API_URL = 'http://{{ ANALYTICSAPI_HOST }}/api/v0'
-DATA_API_AUTH_TOKEN = '{{ API_AUTH_TOKEN }}'
+DATA_API_AUTH_TOKEN = '{{ INSIGHTS_API_AUTH_TOKEN }}'
 ########## END DATA API CONFIGURATION
 
 # used to determine if a course ID is valid
@@ -468,7 +468,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "KEY_PREFIX": "insights",
-        "LOCATION": "redis://{% if REDIS_USERNAME and REDIS_PASSWORD %}{{ REDIS_USERNAME }}:{{ REDIS_PASSWORD }}{% endif %}@{{ REDIS_HOST }}:{{ REDIS_PORT }}/{{ CACHE_REDIS_DB }}",
+        "LOCATION": "redis://{% if REDIS_USERNAME and REDIS_PASSWORD %}{{ REDIS_USERNAME }}:{{ REDIS_PASSWORD }}{% endif %}@{{ REDIS_HOST }}:{{ REDIS_PORT }}/{{ INSIGHTS_CACHE_REDIS_DB }}",
     }
 }
 COURSE_SUMMARIES_CACHE_TIMEOUT = 3600  # 1 hour timeout

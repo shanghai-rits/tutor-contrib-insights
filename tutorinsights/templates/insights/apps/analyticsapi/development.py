@@ -148,7 +148,7 @@ DATABASES = {
     # },
     'analytics': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ REPORTS_MYSQL_DATABASE }}',
+        'NAME': '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}',
         'USER': '{{ ANALYTICSAPI_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',

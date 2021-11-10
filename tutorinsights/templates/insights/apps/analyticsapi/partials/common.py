@@ -157,7 +157,7 @@ ELASTICSEARCH_LEARNERS_UPDATE_INDEX = "{{ INSIGHTS_ELASTICSEARCH_UPDATE_INDEX }}
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = "{{ SECRET_KEY }}"
+SECRET_KEY = "{{ INSIGHTS_SECRET_KEY }}"
 ########## END SECRET CONFIGURATION
 
 
@@ -379,7 +379,7 @@ REST_FRAMEWORK = {
 
 ########## ANALYTICS DATA API CONFIGURATION
 
-ANALYTICS_DATABASE = '{{ REPORTS_MYSQL_DATABASE }}'
+ANALYTICS_DATABASE = '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}'
 # Currently unused, V1 database will support migration to new backend data source
 # ANALYTICS_DATABASE_V1 = 'reports_v1'
 DATABASE_ROUTERS = ['analyticsdataserver.router.AnalyticsApiRouter']
@@ -471,7 +471,7 @@ SYSTEM_TO_FEATURE_ROLE_MAPPING = {
 }
 
 ########## EDX ENTERPRISE DATA CONFIGURATION
-API_AUTH_TOKEN = '{{ API_AUTH_TOKEN }}'
+API_AUTH_TOKEN = '{{ INSIGHTS_API_AUTH_TOKEN }}'
 CSRF_COOKIE_SECURE = False
 
 EXTRA_APPS = []
