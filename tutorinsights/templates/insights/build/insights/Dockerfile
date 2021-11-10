@@ -20,8 +20,8 @@ WORKDIR /openedx/analytics_dashboard
 COPY requirements /openedx/analytics_dashboard/requirements
 RUN python3.8 -m pip install -r requirements/production.txt
 
-EXPOSE 8000
-CMD gunicorn -b 0.0.0.0:8000 --workers 2 --timeout=300 analytics_dashboard.wsgi:application
+EXPOSE 8110
+CMD gunicorn -b 0.0.0.0:8110 --workers 2 --timeout=300 analytics_dashboard.wsgi:application
 
 RUN useradd -m --shell /bin/false app
 USER app
@@ -29,4 +29,4 @@ COPY . /openedx/analytics_dashboard
 
 FROM openedx as edx.org
 RUN python3.8 -m pip install newrelic
-CMD newrelic-admin run-program gunicorn -b 127.0.0.1:8000 --workers 2 --timeout=300 analytics_dashboard.wsgi:application
+CMD newrelic-admin run-program gunicorn -b 127.0.0.1:8110 --workers 2 --timeout=300 analytics_dashboard.wsgi:application

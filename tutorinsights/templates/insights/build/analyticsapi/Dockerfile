@@ -6,9 +6,9 @@ RUN apt update && \
   apt install -y git-core language-pack-en python3.8-dev python3.8-venv libmysqlclient-dev libffi-dev libssl-dev build-essential gettext openjdk-8-jdk && \
   rm -rf /var/lib/apt/lists/*
 
-# ENV VIRTUAL_ENV=/venv
-# RUN python3.8 -m venv $VIRTUAL_ENV
-# ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV VIRTUAL_ENV=/venv
+RUN python3.8 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN pip install pip==20.2.3 setuptools==50.3.0
 
@@ -22,8 +22,8 @@ WORKDIR /opennedx/analytics_api
 COPY requirements /openedx/analytics_api/requirements
 RUN pip install -r requirements/production.txt
 
-EXPOSE 8000
-CMD gunicorn --bind=0.0.0.0:8000 --workers 2 --max-requests=1000 -c /openedx/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
+EXPOSE 8100
+CMD gunicorn --bind=0.0.0.0:8100 --workers 2 --max-requests=1000 -c /openedx/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
 
 RUN useradd -m --shell /bin/false app
 USER app
@@ -31,4 +31,4 @@ COPY . /openedx/analytics_api
 
 FROM app as newrelic
 RUN pip install newrelic
-CMD newrelic-admin run-program gunicorn --bind=0.0.0.0:8000 --workers 2 --max-requests=1000 -c /openedx/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
+CMD newrelic-admin run-program gunicorn --bind=0.0.0.0:8100 --workers 2 --max-requests=1000 -c /openedx/analytics_api/analytics_data_api/docker_gunicorn_configuration.py analyticsdataserver.wsgi:application
