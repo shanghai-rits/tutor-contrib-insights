@@ -1,9 +1,9 @@
 insights:
+  image: {{ INSIGHTS_DOCKER_IMAGE }}
   depends_on:
     - analyticsapi
     - mysql
     - lms
-  restart: unless-stopped
   environment:
       DB_HOST: {{ MYSQL_HOST }}
       DB_NAME: {{ INSIGHTS_DASHBOARD_MYSQL_DATABASE }}
@@ -12,16 +12,15 @@ insights:
       DB_PASSWORD: {{ INSIGHTS_MYSQL_PASSWORD }}
       LMS_HOST: {{ LMS_HOST }}
       DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
-  image: {{ INSIGHTS_DOCKER_IMAGE }}
+  
   volumes:
-    - ../../data/insights:/edx/app/insights/:ro
+    - ../plugins/insights/apps/insights:/openedx/analytics_dashboard/analytics_dashboard/settings/tutor:ro
 
 analyticsapi:
   image: {{ INSIGHTS_ANALYTICSAPI_DOCKER_IMAGE }}
   depends_on:
     - mysql
     - elasticsearch
-  restart: unless-stopped
   environment:
     DB_HOST: {{ MYSQL_HOST }}
     DB_PORT: {{ MYSQL_PORT }}
@@ -29,4 +28,4 @@ analyticsapi:
     DB_PASSWORD: {{ INSIGHTS_MYSQL_PASSWORD }}
     ELASTICSEARCH_LEARNERS_HOST: {{ ELASTICSEARCH_HOST }}
   volumes:
-    - ../../data/analyticsapi:/edx/app/analyticsapi/:ro
+    - ../plugins/insights/apps/analyticsapi:/openedx/analytics_api/analyticsdataserver/settings/tutor:ro

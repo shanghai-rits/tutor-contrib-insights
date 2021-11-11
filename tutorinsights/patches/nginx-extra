@@ -1,6 +1,6 @@
 # Insights
 upstream insights-backend {
-    server insights:8000 fail_timeout=0;
+    server insights:18110 fail_timeout=0;
 }
 server {
   listen 80;
@@ -20,7 +20,7 @@ server {
 
 # Analytics API
 upstream analyticsapi-backend {
-    server analyticsapi:8000 fail_timeout=0;
+    server analyticsapi:19001 fail_timeout=0;
 }
 server {
   listen 80;
