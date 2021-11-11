@@ -21,8 +21,8 @@ config = {
     },
     "defaults": {
         "VERSION": __version__,
-        "DOCKER_IMAGE": "{{ DOCKER_REGISTRY }}edxops/insights:latest",
-        "ANALYTICSAPI_DOCKER_IMAGE": "{{ DOCKER_REGISTRY }}edxops/analytics_api:latest",
+        "DOCKER_IMAGE": "analyticsplugin:insights",
+        "ANALYTICSAPI_DOCKER_IMAGE": "analyticsplugin:api",
         "HOST": "insights.{{ LMS_HOST }}",
         "ANALYTICSAPI_HOST": "analyticsapi.{{ LMS_HOST }}",
         "INDEX_OVERRIDES": {},
