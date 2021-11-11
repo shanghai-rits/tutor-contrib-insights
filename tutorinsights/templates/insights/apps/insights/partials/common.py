@@ -391,12 +391,12 @@ FULL_APPLICATION_NAME = f'{PLATFORM_NAME} {APPLICATION_NAME}'
 
 ########## DOCS/HELP CONFIGURATION
 # DOCS_ROOT = join(SITE_ROOT, 'docs')
-DOCS_ROOT = "http://{{ INSIGHTS_HOST }}/docs"
+# DOCS_ROOT = "http://{{ INSIGHTS_HOST }}/docs"
 
-# Load the docs config into memory when the server starts
-with open(join(DOCS_ROOT, "config.ini")) as config_file:
-    DOCS_CONFIG = ConfigParser()
-    DOCS_CONFIG.readfp(config_file)
+# # Load the docs config into memory when the server starts
+# with open(join(DOCS_ROOT, "config.ini")) as config_file:
+#     DOCS_CONFIG = ConfigParser()
+#     DOCS_CONFIG.readfp(config_file)
 ########## END DOCS/HELP CONFIGURATION
 
 ########## COURSE API
