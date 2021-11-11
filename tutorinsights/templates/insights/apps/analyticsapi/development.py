@@ -133,7 +133,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_DATABASE }}',
-        'USER': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_USER }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
@@ -141,7 +141,7 @@ DATABASES = {
     'analytics': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}',
-        'USER': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_USER }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
         'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
