@@ -29,7 +29,8 @@ WORKDIR /openedx/analytics_dashboard
 
 WORKDIR /openedx/analytics_dashboard
 RUN pip install -r requirements/production.txt
-RUN pip install uwsgi==2.0.19.1
+RUN pip install django-redis==4.12.1
+# RUN pip install uwsgi==2.0.19.1
 
 # Install private requirements: this is useful for installing custom payment processors.
 COPY ./requirements/ /openedx/requirements
