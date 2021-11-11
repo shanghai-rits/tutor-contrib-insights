@@ -414,6 +414,8 @@ AGGREGATE_PAGE_SIZE = 10
 # to course_summaries/
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 
+import json
+
 {% set jwt_rsa_key = rsa_import_key(JWT_RSA_PRIVATE_KEY) %}
 JWT_AUTH["JWT_ISSUER"] = "{{ JWT_COMMON_ISSUER }}"
 JWT_AUTH["JWT_AUDIENCE"] = "{{ JWT_COMMON_AUDIENCE }}"
