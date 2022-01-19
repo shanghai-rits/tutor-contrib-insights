@@ -4,9 +4,9 @@ import pkg_resources
 
 from .__about__ import __version__
 
-templates = pkg_resources.resource_filename(
-    "tutorinsights", "templates"
-)
+HERE = os.path.abspath(os.path.dirname(__file__))
+
+templates = os.path.join(HERE, "templates")
 
 config = {
     "add": {
@@ -27,7 +27,7 @@ config = {
         "ANALYTICSAPI_HOST": "analyticsapi.{{ LMS_HOST }}",
         "INDEX_OVERRIDES": {},
         "DASHBOARD_MYSQL_DATABASE": "dashboard",
-        "ANALYTICSAPI_MYSQL_DATABASE": "analytics-api",
+        "ANALYTICSAPI_MYSQL_DATABASE": "analytics_api",
         "REPORTS_MYSQL_DATABASE": "reports",
         "MYSQL_USER": "analytics001",
         "ANALYTICSAPI_MYSQL_USER": "api001",
@@ -43,24 +43,21 @@ config = {
 }
 
 hooks = {
-    "init": ["mysql", "lms", "analyticsapi", "insights"],
     "build-image": {
-        "insights": "{{ DOCKER_IMAGE }}",
-        "analyticsapi": "{{ ANALYTICS_API_DOCKER_IMAGE }}",
+        "insights": "{{ INSIGHTS_DOCKER_IMAGE }}",
+        "analyticsapi": "{{ INSIGHTS_ANALYTICS_API_DOCKER_IMAGE }}",
     },
     "remote-image": {
-        "insights": "{{ DOCKER_IMAGE }}",
-        "analyticsapi": "{{ ANALYTICS_API_DOCKER_IMAGE }}",
+        "insights": "{{ INSIGHTS_DOCKER_IMAGE }}",
+        "analyticsapi": "{{ INSIGHTS_ANALYTICS_API_DOCKER_IMAGE }}",
     },
+    "init": ["mysql", "lms", "analyticsapi", "insights"],
 }
 
 
 def patches():
     all_patches = {}
-    patches_dir = pkg_resources.resource_filename(
-        "tutorinsights", "patches"
-    )
-    for path in glob(os.path.join(patches_dir, "*")):
+    for path in glob(os.path.join(HERE, "patches", "*")):
         with open(path) as patch_file:
             name = os.path.basename(path)
             content = patch_file.read()
