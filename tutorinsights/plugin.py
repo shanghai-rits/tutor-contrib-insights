@@ -21,8 +21,8 @@ config = {
     },
     "defaults": {
         "VERSION": __version__,
-        "DOCKER_IMAGE": "analyticsplugin:insights",
-        "ANALYTICSAPI_DOCKER_IMAGE": "analyticsplugin:api",
+        "DOCKER_IMAGE": "tutorcontribinsights-insights:latest",
+        "ANALYTICSAPI_DOCKER_IMAGE": "tutorcontribinsights-api:latest",
         "HOST": "insights.{{ LMS_HOST }}",
         "ANALYTICSAPI_HOST": "analyticsapi.{{ LMS_HOST }}",
         "INDEX_OVERRIDES": {},
