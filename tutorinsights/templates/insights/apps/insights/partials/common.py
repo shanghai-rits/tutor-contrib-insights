@@ -1,8 +1,34 @@
 import os
 from os.path import abspath, basename, dirname, join, normpath
-# from sys import path
+from sys import path
+
+from configparser import ConfigParser
 
 next_page='/'"""Common settings and globals."""
+
+
+########## PATH CONFIGURATION
+# Absolute filesystem path to the Django project directory:
+DJANGO_ROOT = dirname(dirname(dirname(abspath(__file__))))
+BASE_DIR = DJANGO_ROOT
+
+# Absolute filesystem path to the top-level project folder:
+SITE_ROOT = dirname(DJANGO_ROOT)
+
+# Site name:
+SITE_NAME = basename(DJANGO_ROOT)
+
+# Add our project to our pythonpath, this way we don't need to type our project
+# name in our dotted import paths:
+path.append(DJANGO_ROOT)
+########## END PATH CONFIGURATION
+
+
+########## DEBUG CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
+DEBUG = False
+ENABLE_INSECURE_STATIC_FILES = False
+########## END DEBUG CONFIGURATION
 
 
 ########## MANAGER CONFIGURATION
@@ -27,11 +53,69 @@ DATABASES = {
         'HOST': '{{ MYSQL_HOST }}',
         'PORT': '{{ MYSQL_PORT }}',
         'OPTIONS': {
+            'connect_timeout': 10,
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },
     }
 }
 ########## END DATABASE CONFIGURATION
+
+
+########## GENERAL CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
+TIME_ZONE = 'UTC'
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
+LANGUAGE_CODE = 'en-us'
+
+LOCALE_PATHS = (
+    join(DJANGO_ROOT, 'conf', 'locale'),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
+USE_I18N = True
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
+USE_L10N = True
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
+USE_TZ = True
+
+FORMAT_MODULE_PATH = 'core.formats'
+########## END GENERAL CONFIGURATION
+
+
+########## MEDIA CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#media-root
+MEDIA_ROOT = normpath(join(DJANGO_ROOT, 'media'))
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
+MEDIA_URL = '/media/'
+########## END MEDIA CONFIGURATION
+
+
+########## STATIC FILE CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
+STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
+
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
+STATIC_URL = '/static/'
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+STATICFILES_DIRS = (
+    normpath(join(DJANGO_ROOT, 'static')),
+)
+
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+########## END STATIC FILE CONFIGURATION
+
 
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
@@ -43,11 +127,44 @@ SECRET_KEY = '{{ INSIGHTS_SECRET_KEY }}'
 ########## SITE CONFIGURATION
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = [
-    "{{ INSIGHTS_HOST }}",
-    "insights",
-]
+ALLOWED_HOSTS = []
 ########## END SITE CONFIGURATION
+
+########## FIXTURE CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
+FIXTURE_DIRS = (
+    normpath(join(DJANGO_ROOT, 'fixtures')),
+)
+########## END FIXTURE CONFIGURATION
+
+
+########## TEMPLATE CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#templates
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'DIRS': [
+            normpath(join(DJANGO_ROOT, 'templates')),
+        ],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+                'core.context_processors.common',
+            ],
+            'debug': True,
+        }
+    }
+]
+########## END TEMPLATE CONFIGURATION
+
 
 ########## MIDDLEWARE CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.11/ref/settings/#middleware-classes
@@ -70,9 +187,37 @@ MIDDLEWARE = [
     'help.middleware.HelpURLMiddleware',
     'edx_django_utils.cache.middleware.TieredCacheMiddleware',
     'edx_rest_framework_extensions.middleware.RequestMetricsMiddleware',
+    'edx_rest_framework_extensions.auth.jwt.middleware.EnsureJWTAuthSettingsMiddleware',
 ]
 ########## END MIDDLEWARE CONFIGURATION
 
+
+########## URL CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#root-urlconf
+ROOT_URLCONF = '%s.urls' % SITE_NAME
+########## END URL CONFIGURATION
+
+
+########## APP CONFIGURATION
+DJANGO_APPS = (
+    # Default Django apps:
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    # Useful template tags:
+    'django.contrib.humanize',
+
+    # Admin panel and documentation:
+    'django.contrib.admin',
+    'waffle',
+    'django_countries',
+    'pinax.announcements',
+    'rest_framework_jwt',
+)
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
@@ -95,13 +240,52 @@ INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 
 ########## LOGGING CONFIGURATION
-
-LOGGING["handlers"]["local"] = {
-    "class": "logging.handlers.WatchedFileHandler",
-    "filename": "/var/log/ecommerce.log",
-    "formatter": "standard",
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#logging
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
 }
 ########## END LOGGING CONFIGURATION
+
+
+########## WSGI CONFIGURATION
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
+WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+########## END WSGI CONFIGURATION
+
+########## SEGMENT.IO
+# 'None' disables tracking.  This will be turned on for test and production.
+SEGMENT_IO_KEY = 'YOUR_KEY'
+
+# Regular expression used to identify users that should be ignored in reporting.
+# This value will be compiled and should be either a string (e.g. when importing with YAML) or
+# a Python regex type.
+SEGMENT_IGNORE_EMAIL_REGEX = None
+########## END SEGMENT.IO
 
 ########## SUPPORT -- Ths value should be overridden for production deployments.
 SUPPORT_EMAIL = 'support@example.com'
@@ -110,12 +294,10 @@ TERMS_OF_SERVICE_URL = 'http://example.com/terms-service'
 ########## END FEEDBACK
 
 ########## EMAIL CONFIG
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "{{ SMTP_HOST }}"
 EMAIL_PORT = "{{ SMTP_PORT }}"
 EMAIL_HOST_USER = "{{ SMTP_USERNAME }}"
 EMAIL_HOST_PASSWORD = "{{ SMTP_PASSWORD }}"
-EMAIL_USE_TLS = "{{ SMTP_USE_TLS }}"
 ########## END EMAIL CONFIG
 
 ########## LANDING PAGE -- URLs should be overridden for production deployments.
@@ -133,8 +315,13 @@ DOCUMENTATION_LOAD_ERROR_MESSAGE = f'<a href="{DOCUMENTATION_LOAD_ERROR_URL}" ta
 
 ########## DATA API CONFIGURATION
 DATA_API_URL = 'http://{{ INSIGHTS_ANALYTICSAPI_HOST }}/api/v0'
+DATA_API_V1_ENABLED = False
+DATA_API_URL_V1 = 'http://{{ INSIGHTS_ANALYTICSAPI_HOST }}/api/v1'
 DATA_API_AUTH_TOKEN = '{{ INSIGHTS_API_AUTH_TOKEN }}'
 ########## END DATA API CONFIGURATION
+
+# can this installation collect and display age info
+ENROLLMENT_AGE_AVAILABLE = True
 
 # used to determine if a course ID is valid
 LMS_COURSE_VALIDATION_BASE_URL = None
@@ -179,6 +366,17 @@ BACKEND_SERVICE_EDX_OAUTH2_KEY = "{{ INSIGHTS_BACKEND_OAUTH2_KEY }}"
 BACKEND_SERVICE_EDX_OAUTH2_SECRET = "{{ INSIGHTS_BACKEND_OAUTH2_SECRET }}"
 BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "http://lms:8000/oauth2"
 
+# Enables a special view that, when accessed, creates and logs in a new user.
+# This should NOT be enabled for production deployments!
+ENABLE_AUTO_AUTH = False
+
+# Prefix for auto auth usernames. This value MUST be set in order for auto-auth to function. If it were not set
+# we would be unable to automatically remove all auto-auth users.
+AUTO_AUTH_USERNAME_PREFIX = 'AUTO_AUTH_'
+
+# Maximum time (in seconds) before course permissions expire and need to be refreshed
+COURSE_PERMISSIONS_TIMEOUT = 900
+
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/courses/'
 LOGOUT_REDIRECT_URL = '/'
@@ -192,6 +390,16 @@ ENABLE_COURSE_PERMISSIONS = True
 PLATFORM_NAME = '{{ PLATFORM_NAME }}'
 APPLICATION_NAME = 'Insights'
 FULL_APPLICATION_NAME = f'{PLATFORM_NAME} {APPLICATION_NAME}'
+
+
+########## DOCS/HELP CONFIGURATION
+DOCS_ROOT = join(SITE_ROOT, 'docs')
+
+# Load the docs config into memory when the server starts
+with open(join(DOCS_ROOT, "config.ini")) as config_file:
+    DOCS_CONFIG = ConfigParser()
+    DOCS_CONFIG.readfp(config_file)
+########## END DOCS/HELP CONFIGURATION
 
 ########## COURSE API
 COURSE_API_URL = 'http://lms:8000/api/courses/v1/'
@@ -215,11 +423,30 @@ LMS_DEFAULT_TIMEOUT = 5
 
 _ = lambda s: s
 
+########## LINKS THAT SHOULD BE SHOWN IN FOOTER
+# Example:
+# FOOTER_LINKS = (
+#     {'url': 'https://www.edx.org', 'text': 'About edX', 'data_role': None},
+#     {'url': 'https://www.edx.org/contact-us', 'text': 'Contact Us', 'data_role': None},
+#     {'url': 'http://example.com', 'text': 'Terms of Service', 'data_role': 'tos'},
+#     {'url': 'http://example.com', 'text': 'Privacy Policy', 'data_role': 'privacy-policy'},
+# )
 FOOTER_LINKS = (
     {'url': 'http://example.com/', 'text': _('Terms of Service'), 'data_role': 'tos'},
     {'url': 'http://example.com/', 'text': _('Privacy Policy'), 'data_role': 'privacy-policy'},
 )
+########## END LINKS THAT SHOULD BE SHOWN IN FOOTER
 
+########## REST FRAMEWORK CONFIGURATION
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    ),
+}
+########## END REST FRAMEWORK CONFIGURATION
 
 ########## COURSE_ID_PATTERN
 # Regex used to capture course_ids from URLs
@@ -240,10 +467,10 @@ BLOCK_LEARNER_ANALYTICS_ORG_LIST = []
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "KEY_PREFIX": "insights",
-        "LOCATION": "redis://{% if REDIS_USERNAME and REDIS_PASSWORD %}{{ REDIS_USERNAME }}:{{ REDIS_PASSWORD }}{% endif %}@{{ REDIS_HOST }}:{{ REDIS_PORT }}/{{ INSIGHTS_CACHE_REDIS_DB }}",
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'KEY_PREFIX': 'default_env-default_deployment-insights',
+        'LOCATION': '127.0.0.1:11211',
     }
 }
 COURSE_SUMMARIES_CACHE_TIMEOUT = 3600  # 1 hour timeout
@@ -272,7 +499,7 @@ LANGUAGE_COOKIE_NAME = 'insights_language'
 CSRF_COOKIE_NAME = 'insights_csrftoken'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#csrf-cookie-secure
-# CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
 ######### END CSRF COOKIE
 
 ########## SESSION COOKIE
@@ -285,35 +512,15 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 
 COURSE_SUMMARIES_IDS_CUTOFF = 500
 
-PRIVACY_POLICY_URL = 'http://{{ INSIGHTS_HOST }}/privacy-policy'
+PRIVACY_POLICY_URL = 'http://example.com/privacy-policy'
 
-CORS_ALLOW_CREDENTIALS = True
+################################ Settings for JWTs ################################
 
-import json
+JWT_AUTH = {
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
 
-{% set jwt_rsa_key = rsa_import_key(JWT_RSA_PRIVATE_KEY) %}
-JWT_AUTH["JWT_ISSUER"] = "{{ JWT_COMMON_ISSUER }}"
-JWT_AUTH["JWT_AUDIENCE"] = "{{ JWT_COMMON_AUDIENCE }}"
-JWT_AUTH["JWT_SECRET_KEY"] = "{{ JWT_COMMON_SECRET_KEY }}"
-JWT_AUTH["JWT_PUBLIC_SIGNING_JWK_SET"] = json.dumps(
-    {
-        "keys": [
-            {
-                "kid": "openedx",
-                "kty": "RSA",
-                "e": "{{ jwt_rsa_key.e|long_to_base64 }}",
-                "n": "{{ jwt_rsa_key.n|long_to_base64 }}",
-            }
-        ]
-    }
-)
-JWT_AUTH["JWT_ISSUERS"] = [
-    {
-        "ISSUER": "{{ JWT_COMMON_ISSUER }}",
-        "AUDIENCE": "{{ JWT_COMMON_AUDIENCE }}",
-        "SECRET_KEY": "{{ OPENEDX_SECRET_KEY }}"
-    }
-]
-
-ENTERPRISE_SERVICE_URL = '{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}/enterprise/'
-ENTERPRISE_API_URL = ENTERPRISE_SERVICE_URL + 'api/v1/'
+# Required for Django 3.2 upgrade
+# See https://openedx.atlassian.net/wiki/spaces/AC/pages/3066626061/Django+3.2+Upgrade+Key+Changes
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+DEFAULT_HASHING_ALGORITHM = 'sha1'
