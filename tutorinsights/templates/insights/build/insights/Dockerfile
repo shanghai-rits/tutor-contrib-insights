@@ -73,4 +73,4 @@ CMD gunicorn -b 0.0.0.0:18110 --workers 2 --timeout=300 analytics_dashboard.wsgi
 
 FROM openedx as edx.org
 RUN python3.8 -m pip install newrelic
-CMD newrelic-admin run-program gunicorn -b 127.0.0.1:18110 --workers 2 --timeout=300 analytics_dashboard.wsgi:application
+CMD newrelic-admin run-program gunicorn -b 0.0.0.0:18110 --workers 2 --timeout=300 analytics_dashboard.wsgi:application

@@ -7,6 +7,23 @@ from analytics_dashboard.settings.yaml_config import *
 LOGGING = get_logger_config()
 
 
+DEBUG = True # Find a CDN to place these files on
+ENABLE_INSECURE_STATIC_FILES = True
+
+SOCIAL_AUTH_EDX_OAUTH2_KEY = "{{ INSIGHTS_OAUTH2_KEY }}"
+SOCIAL_AUTH_EDX_OAUTH2_SECRET = "{{ INSIGHTS_OAUTH2_SECRET }}"
+SOCIAL_AUTH_EDX_OAUTH2_ISSUER = "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+SOCIAL_AUTH_EDX_OAUTH2_URL_ROOT = "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}"
+SOCIAL_AUTH_EDX_OAUTH2_LOGOUT_URL = "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}/logout"
+
+BACKEND_SERVICE_EDX_OAUTH2_KEY = "{{ INSIGHTS_BACKEND_OAUTH2_KEY }}"
+BACKEND_SERVICE_EDX_OAUTH2_SECRET = "{{ INSIGHTS_BACKEND_OAUTH2_SECRET }}"
+BACKEND_SERVICE_EDX_OAUTH2_PROVIDER_URL = "{% if ENABLE_HTTPS %}https{% else %}http{% endif %}://{{ LMS_HOST }}/oauth2"
+
+DATA_API_AUTH_TOKEN = 'edx' # Fix this!
+
+SEGMENT_IO_KEY = None
+
 # ######### HOST CONFIGURATION
 # See: https://docs.djangoproject.com/en/1.5/releases/1.5/#allowed-hosts-required-in-production
 ALLOWED_HOSTS = ['*']
