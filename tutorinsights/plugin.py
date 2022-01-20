@@ -39,6 +39,7 @@ config = {
         "ANALYTICSAPI_BACKEND_OAUTH2_KEY": "analytics_api-backend-service-key",
         "CACHE_REDIS_DB": "{{ OPENEDX_CACHE_REDIS_DB }}",
         "ELASTICSEARCH_INDEX": "learner",
+        "ELASTICSEARCH_INDEX_ALIAS": "learner_alias",
         "ELASTICSEARCH_UPDATE_INDEX": "index_update",
         "ANALYTICSAPI_COURSE_BLOCK_API": "",
     },
