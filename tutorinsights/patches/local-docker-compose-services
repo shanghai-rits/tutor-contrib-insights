@@ -12,9 +12,9 @@ insights:
       DB_PASSWORD: {{ INSIGHTS_MYSQL_PASSWORD }}
       LMS_HOST: {{ LMS_HOST }}
       DJANGO_SETTINGS_MODULE: analytics_dashboard.settings.tutor.production
-  
   volumes:
-    - ../plugins/insights/apps/insights:/openedx/analytics_dashboard/analytics_dashboard/settings/tutor:ro
+    - ../plugins/insights/apps/insights/settings:/openedx/analytics_dashboard/analytics_dashboard/settings/tutor:ro
+    - ../plugins/insights/apps/insights/config:/openedx/settings:ro
 
 analyticsapi:
   image: {{ INSIGHTS_ANALYTICSAPI_DOCKER_IMAGE }}
@@ -27,5 +27,7 @@ analyticsapi:
     DB_USER: {{ INSIGHTS_MYSQL_USER }}
     DB_PASSWORD: {{ INSIGHTS_MYSQL_PASSWORD }}
     ELASTICSEARCH_LEARNERS_HOST: {{ ELASTICSEARCH_HOST }}
+    DJANGO_SETTINGS_MODULE: analyticsdataserver.settings.tutor.production
   volumes:
-    - ../plugins/insights/apps/analyticsapi:/openedx/analytics_api/analyticsdataserver/settings/tutor:ro
+    - ../plugins/insights/apps/analyticsapi/settings:/openedx/analytics_api/analyticsdataserver/settings/tutor:ro
+    - ../plugins/insights/apps/analyticsapi/confg:/openedx/settings:ro
