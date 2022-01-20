@@ -76,10 +76,6 @@ REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'] = (
 )
 ########## END REST FRAMEWORK CONFIGURATION
 
-########## DATA API CONFIGURATION
-DATA_API_AUTH_TOKEN = 'openedx'
-########## END DATA API CONFIGURATION
-
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
@@ -113,10 +109,11 @@ DB_OVERRIDES = dict(
 for override, value in DB_OVERRIDES.items():
     DATABASES['default'][override] = value
 
-DATA_API_URL = 'http://{{ INSIGHTS_ANALYTICSAPI_HOST }}/api/v0'
+DATA_API_URL = 'http://{{ INSIGHTS_ANALYTICSAPI_HOST }}:19001/api/v0'
 DATA_API_V1_ENABLED = False
-DATA_API_URL_V1 = 'http://{{ INSIGHTS_ANALYTICSAPI_HOST }}/api/v1'
-DATA_API_AUTH_TOKEN = '{{ INSIGHTS_API_AUTH_TOKEN }}'
+DATA_API_URL_V1 = 'http://{{ INSIGHTS_ANALYTICSAPI_HOST }}:19001/api/v1'
+# DATA_API_AUTH_TOKEN = '{{ INSIGHTS_API_AUTH_TOKEN }}'
+DATA_API_AUTH_TOKEN = 'edx'
 
 ENROLLMENT_AGE_AVAILABLE = True
 

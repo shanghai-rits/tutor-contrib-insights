@@ -84,7 +84,7 @@ ANALYTICS_DATABASE_V1 = 'analytics'
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 SWAGGER_SETTINGS = {
-    'api_key': "openedx"
+    'api_key': "edx"
 }
 
 # These two settings are used in generate_fake_course_data.py.
