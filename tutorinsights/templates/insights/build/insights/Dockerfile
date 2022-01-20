@@ -39,13 +39,20 @@ RUN cd /openedx/requirements/ \
   && pip install -r ./private.txt
 
 # Setup minimal yml config file, which is required by production settings
-RUN echo "{}" > /openedx/insights.yml
-ENV ANALYTICS_DASHBOARD_CFG /openedx/insights.yml
+RUN mkdir /openedx/settings/
+RUN echo "{}" > /openedx/settings/insights.yml
+ENV ANALYTICS_DASHBOARD_CFG /openedx/settings/insights.yml
 
 # Install a recent version of nodejs
 RUN pip install nodeenv
 RUN nodeenv /openedx/nodeenv --node=12.13.0 --prebuilt
 ENV PATH /openedx/nodeenv/bin:${PATH}
+
+# Run the set up code 
+RUN npm install 
+RUN ./npm-post-install.sh
+RUN make migrate
+RUN make static
 
 EXPOSE 18110
 CMD gunicorn -b 0.0.0.0:18110 --workers 2 --timeout=300 analytics_dashboard.wsgi:application

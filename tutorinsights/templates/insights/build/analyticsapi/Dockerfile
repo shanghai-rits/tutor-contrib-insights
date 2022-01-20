@@ -37,8 +37,9 @@ RUN cd /openedx/requirements/ \
   && pip install -r ./private.txt
 
 # Setup minimal yml config file, which is required by production settings
-RUN echo "{}" > /openedx/insights.yml
-ENV ANALYTICS_API_CFG /openedx/insights.yml
+RUN mkdir /openedx/settings/ 
+RUN echo "{}" > /openedx/settings/insights.yml
+ENV ANALYTICS_API_CFG /openedx/settings/insights.yml
 
 COPY gunicorn/ /openedx/analytics_api/analytics_data_api/
 
