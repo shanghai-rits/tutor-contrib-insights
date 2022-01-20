@@ -30,4 +30,4 @@ analyticsapi:
     DJANGO_SETTINGS_MODULE: analyticsdataserver.settings.tutor.production
   volumes:
     - ../plugins/insights/apps/analyticsapi/settings:/openedx/analytics_api/analyticsdataserver/settings/tutor:ro
-    - ../plugins/insights/apps/analyticsapi/confg:/openedx/settings:ro
+    - ../plugins/insights/apps/analyticsapi/config:/openedx/settings:ro
