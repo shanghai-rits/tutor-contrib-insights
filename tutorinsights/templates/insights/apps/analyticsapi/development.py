@@ -1,74 +1,77 @@
 """Development settings and globals."""
 
-from ..devstack import *
-
-{% include "insights/apps/analyticsapi/partials/common.py" %}
-
+import os
 
 from os.path import join, normpath
 
 from corsheaders.defaults import default_headers as corsheaders_default_headers
 
-from analyticsdataserver.settings.base import *
+{% include "insights/apps/analyticsapi/partials/common.py" %}
 
 ########## DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
 DEBUG = True
 ########## END DEBUG CONFIGURATION
 
-
 ########## EMAIL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ########## END EMAIL CONFIGURATION
 
-
 ########## DATABASE CONFIGURATION
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'default.db')),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_DATABASE }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
     },
     'analytics': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'analytics.db')),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
     },
     'analytics_v1': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'analytics.db')),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'reports_v1',
+        'USER': '{{ INSIGHTS_MYSQL_USER }}',
+        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
+        'HOST': '{{ MYSQL_HOST }}',
+        'PORT': '{{ MYSQL_PORT }}',
     },
-    'enterprise': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': normpath(join(DJANGO_ROOT, 'enterprise_reporting.db')),
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
 }
+
+ANALYTICS_DATABASE_V1 = 'analytics_v1'
+
+DB_OVERRIDES = dict(
+    USER=os.environ.get('DB_USER', DATABASES['default']['USER']),
+    PASSWORD=os.environ.get('DB_PASSWORD', DATABASES['default']['PASSWORD']),
+    HOST=os.environ.get('DB_HOST', DATABASES['default']['HOST']),
+    PORT=os.environ.get('DB_PORT', DATABASES['default']['PORT']),
+)
+
+for override, value in DB_OVERRIDES.items():
+    DATABASES['default'][override] = value
+    DATABASES['analytics'][override] = value
+    DATABASES['analytics_v1'][override] = value
+
+DATABASE_ROUTERS = ['analyticsdataserver.router.AnalyticsDevelopmentRouter', 'analyticsdataserver.router.AnalyticsAPIRouter', 'analyticsdataserver.router.AnalyticsModelsRouter']
+
 ########## END DATABASE CONFIGURATION
 
 
 ########## CACHE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#caches
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
-#     }
-# }
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}
 ########## END CACHE CONFIGURATION
 
 
@@ -80,9 +83,9 @@ ANALYTICS_DATABASE_V1 = 'analytics'
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
-# SWAGGER_SETTINGS = {
-#     'api_key': "openedx"
-# }
+SWAGGER_SETTINGS = {
+    'api_key': "openedx"
+}
 
 # These two settings are used in generate_fake_course_data.py.
 # Replace with correct values to generate local fake video data.
@@ -124,41 +127,3 @@ ELASTICSEARCH_LEARNERS_INDEX_ALIAS = 'roster_entry'
 ELASTICSEARCH_LEARNERS_UPDATE_INDEX = 'index_update'
 
 ########## END ANALYTICS DATA API CONFIGURATION
-
-"""Devstack settings."""
-
-
-########## DATABASE CONFIGURATION
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ INSIGHTS_ANALYTICSAPI_MYSQL_DATABASE }}',
-        'USER': '{{ INSIGHTS_MYSQL_USER }}',
-        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
-        'HOST': '{{ MYSQL_HOST }}',
-        'PORT': '{{ MYSQL_PORT }}',
-    },
-    'analytics': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}',
-        'USER': '{{ INSIGHTS_MYSQL_USER }}',
-        'PASSWORD': '{{ INSIGHTS_MYSQL_PASSWORD }}',
-        'HOST': '{{ MYSQL_HOST }}',
-        'PORT': '{{ MYSQL_PORT }}',
-    }
-}
-
-# DB_OVERRIDES = dict(
-#     USER=os.environ.get('DB_USER', DATABASES['default']['USER']),
-#     PASSWORD=os.environ.get('DB_PASSWORD', DATABASES['default']['PASSWORD']),
-#     HOST=os.environ.get('DB_HOST', DATABASES['default']['HOST']),
-#     PORT=os.environ.get('DB_PORT', DATABASES['default']['PORT']),
-# )
-
-# for override, value in DB_OVERRIDES.items():
-#     DATABASES['default'][override] = value
-#     DATABASES['analytics'][override] = value
-#     DATABASES['analytics_v1'][override] = value
-########## END DATABASE CONFIGURATION
-
-LMS_BASE_URL = "http://{{ LMS_HOST }}"

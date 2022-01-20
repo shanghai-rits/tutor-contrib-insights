@@ -6,23 +6,23 @@ from os import environ
 from os.path import abspath, basename, dirname, join, normpath
 from sys import stderr
 
-# from enterprise_data_roles.constants import (
-#     ENTERPRISE_DATA_ADMIN_ROLE,
-#     SYSTEM_ENTERPRISE_ADMIN_ROLE,
-#     SYSTEM_ENTERPRISE_OPERATOR_ROLE,
-# )
+from enterprise_data_roles.constants import (
+    ENTERPRISE_DATA_ADMIN_ROLE,
+    SYSTEM_ENTERPRISE_ADMIN_ROLE,
+    SYSTEM_ENTERPRISE_OPERATOR_ROLE,
+)
 
 from analytics_data_api.constants.engagement_events import DISCUSSION
 
 ########## PATH CONFIGURATION
 # Absolute filesystem path to the Django project directory:
-# DJANGO_ROOT = dirname(dirname(abspath(__file__)))
+DJANGO_ROOT = dirname(dirname(dirname(abspath(__file__))))
 
 # Absolute filesystem path to the top-level project folder:
-# SITE_ROOT = dirname(DJANGO_ROOT)
+SITE_ROOT = dirname(DJANGO_ROOT)
 
 # Site name:
-# SITE_NAME = basename(DJANGO_ROOT)
+SITE_NAME = basename(DJANGO_ROOT)
 ########## END PATH CONFIGURATION
 
 
@@ -60,15 +60,6 @@ DATABASES = {
         'USER': '{{ INSIGHTS_MYSQL_USER }}',
         'ATOMIC_REQUESTS': False,
     },
-    # 'reports_v1': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'HOST': 'localhost',
-    #     'NAME': 'reports_v1',
-    #     'OPTIONS': DEFAULT_MYSQL_OPTIONS,
-    #     'PASSWORD': 'password',
-    #     'PORT': '3306',
-    #     'USER': 'reports001',
-    # },
     'reports': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'reports',
@@ -78,15 +69,6 @@ DATABASES = {
         'PORT': '{{ MYSQL_PORT }}',
         'USER': '{{ INSIGHTS_MYSQL_USER}}',
     },
-    # 'enterprise': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'HOST': 'localhost',
-    #     'NAME': 'enterprise_reporting',
-    #     'OPTIONS': DEFAULT_MYSQL_OPTIONS,
-    #     'PASSWORD': 'password',
-    #     'PORT': '3306',
-    #     'USER': 'api001',
-    # }
 }
 ########## END DATABASE CONFIGURATION
 
@@ -98,66 +80,66 @@ ELASTICSEARCH_LEARNERS_UPDATE_INDEX = "{{ INSIGHTS_ELASTICSEARCH_UPDATE_INDEX }}
 
 # access credentials for signing requests to AWS.
 # For more information see http://docs.aws.amazon.com/general/latest/gr/signing_aws_api_requests.html
-# ELASTICSEARCH_AWS_ACCESS_KEY_ID = None
-# ELASTICSEARCH_AWS_SECRET_ACCESS_KEY = None
+ELASTICSEARCH_AWS_ACCESS_KEY_ID = None
+ELASTICSEARCH_AWS_SECRET_ACCESS_KEY = None
 # override the default elasticsearch connection class and useful for signing certificates
 # e.g. 'analytics_data_api.v0.connections.BotoHttpConnection'
-# ELASTICSEARCH_CONNECTION_CLASS = None
-# # only needed with BotoHttpConnection, e.g. 'us-east-1'
-# ELASTICSEARCH_CONNECTION_DEFAULT_REGION = None
+ELASTICSEARCH_CONNECTION_CLASS = None
+# only needed with BotoHttpConnection, e.g. 'us-east-1'
+ELASTICSEARCH_CONNECTION_DEFAULT_REGION = None
 
-# DEFAULT_ELASTICSEARCH_INDEX_SETTINGS = {
-#     'number_of_shards': 1,
-#     'number_of_replicas': 0
-# }
-# ELASTICSEARCH_INDEX_SETTINGS = environ.get('ELASTICSEARCH_INDEX_SETTINGS', DEFAULT_ELASTICSEARCH_INDEX_SETTINGS)
+DEFAULT_ELASTICSEARCH_INDEX_SETTINGS = {
+    'number_of_shards': 1,
+    'number_of_replicas': 0
+}
+ELASTICSEARCH_INDEX_SETTINGS = environ.get('ELASTICSEARCH_INDEX_SETTINGS', DEFAULT_ELASTICSEARCH_INDEX_SETTINGS)
 ########## END ELASTICSEARCH CONFIGURATION
 
 ########## GENERAL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-# TIME_ZONE = 'UTC'
+TIME_ZONE = 'UTC'
 
-# # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-# LANGUAGE_CODE = 'en-us'
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
+LANGUAGE_CODE = 'en-us'
 
-# # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
-# SITE_ID = 1
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
+SITE_ID = 1
 
-# # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
-# USE_I18N = False
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
+USE_I18N = False
 
-# # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
-# USE_L10N = False
+# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
+USE_L10N = False
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
-# USE_TZ = True
+USE_TZ = True
 ########## END GENERAL CONFIGURATION
 
 
 ########## STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-root
-# STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
+STATIC_ROOT = normpath(join(SITE_ROOT, 'assets'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
-# # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-# STATICFILES_DIRS = (
-#     normpath(join(SITE_ROOT, 'static')),
-# )
+# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+STATICFILES_DIRS = (
+    normpath(join(SITE_ROOT, 'static')),
+)
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
-# STATICFILES_FINDERS = (
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-# )
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
 ########## END STATIC FILE CONFIGURATION
 
 
 ########## SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
 # Note: This key should only be used for development and testing.
-SECRET_KEY = "{{ INSIGHTS_SECRET_KEY }}"
+SECRET_KEY = r"g)rke*$-ox1yursa_l!rjnh6tn!pd+qs^8i03xb0!#50#zhb%k"
 ########## END SECRET CONFIGURATION
 
 
@@ -170,35 +152,35 @@ ALLOWED_HOSTS = []
 
 ########## FIXTURE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-# FIXTURE_DIRS = (
-#     normpath(join(SITE_ROOT, 'fixtures')),
-# )
+FIXTURE_DIRS = (
+    normpath(join(SITE_ROOT, 'fixtures')),
+)
 ########## END FIXTURE CONFIGURATION
 
 
 ########## TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-TEMPLATES
-# TEMPLATES = [
-#     {
-#         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-#         'DIRS': [
-#             normpath(join(SITE_ROOT, 'templates')),
-#         ],
-#         'APP_DIRS': True,
-#         'OPTIONS': {
-#             'context_processors': [
-#                 'django.contrib.auth.context_processors.auth',
-#                 'django.template.context_processors.debug',
-#                 'django.template.context_processors.i18n',
-#                 'django.template.context_processors.media',
-#                 'django.template.context_processors.static',
-#                 'django.template.context_processors.tz',
-#                 'django.contrib.messages.context_processors.messages',
-#                 'django.template.context_processors.request',
-#             ],
-#         },
-#     }
-# ]
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            normpath(join(SITE_ROOT, 'templates')),
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+        },
+    }
+]
 ########## END TEMPLATE CONFIGURATION
 
 
@@ -221,13 +203,14 @@ MIDDLEWARE = [
     'edx_rest_framework_extensions.middleware.RequestMetricsMiddleware',
     'edx_rest_framework_extensions.auth.jwt.middleware.EnsureJWTAuthSettingsMiddleware',
     'waffle.middleware.WaffleMiddleware',
-    'analytics_data_api.v0.middleware.LearnerEngagementTimelineNotFoundErrorMiddleware',
-    'analytics_data_api.v0.middleware.LearnerNotFoundErrorMiddleware',
-    'analytics_data_api.v0.middleware.CourseNotSpecifiedErrorMiddleware',
-    'analytics_data_api.v0.middleware.CourseKeyMalformedErrorMiddleware',
-    'analytics_data_api.v0.middleware.ParameterValueErrorMiddleware',
-    'analytics_data_api.v0.middleware.ReportFileNotFoundErrorMiddleware',
-    'analytics_data_api.v0.middleware.CannotCreateDownloadLinkErrorMiddleware',
+    'analytics_data_api.middleware.LearnerEngagementTimelineNotFoundErrorMiddleware',
+    'analytics_data_api.middleware.LearnerNotFoundErrorMiddleware',
+    'analytics_data_api.middleware.CourseNotSpecifiedErrorMiddleware',
+    'analytics_data_api.middleware.CourseKeyMalformedErrorMiddleware',
+    'analytics_data_api.middleware.ParameterValueErrorMiddleware',
+    'analytics_data_api.middleware.ReportFileNotFoundErrorMiddleware',
+    'analytics_data_api.middleware.CannotCreateDownloadLinkErrorMiddleware',
+    'analytics_data_api.middleware.RequestVersionMiddleware',
 ]
 ########## END MIDDLEWARE CONFIGURATION
 
@@ -239,44 +222,44 @@ ROOT_URLCONF = '%s.urls' % SITE_NAME
 
 
 ########## APP CONFIGURATION
-# DJANGO_APPS = (
-#     'django.contrib.auth',
-#     'django.contrib.contenttypes',
-#     'django.contrib.sessions',
-#     'django.contrib.sites',
-#     'django.contrib.messages',
-#     'django.contrib.staticfiles',
-#     'django.contrib.admin',
-# )
+DJANGO_APPS = (
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.admin',
+)
 
-# THIRD_PARTY_APPS = (
-#     'release_util',
-#     'rest_framework',
-#     'rest_framework.authtoken',
-#     'rest_framework_jwt',
-#     'django_countries',
-#     'drf_yasg',
-#     'edx_api_doc_tools',
-#     'storages',
-#     'enterprise_data',
-#     'rules.apps.AutodiscoverRulesConfig',
-#     'corsheaders',
-#     'waffle',
-# )
+THIRD_PARTY_APPS = (
+    'release_util',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'rest_framework_jwt',
+    'django_countries',
+    'drf_yasg',
+    'edx_api_doc_tools',
+    'storages',
+    'enterprise_data',
+    'rules.apps.AutodiscoverRulesConfig',
+    'corsheaders',
+    'waffle',
+)
 
-# LOCAL_APPS = (
-#     'analytics_data_api',
-#     'analytics_data_api.v0',
-#     'enterprise_data_roles',
-# )
+LOCAL_APPS = (
+    'analytics_data_api',
+    'analytics_data_api.v0',
+    'enterprise_data_roles',
+)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-# INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-# AUTHENTICATION_BACKENDS = [
-#     'rules.permissions.ObjectPermissionBackend',
-#     'django.contrib.auth.backends.ModelBackend',
-# ]
+AUTHENTICATION_BACKENDS = [
+    'rules.permissions.ObjectPermissionBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
 ########## END APP CONFIGURATION
 
 
@@ -344,7 +327,7 @@ LOGGING = {
 
 ########## WSGI CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-# WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
+WSGI_APPLICATION = '%s.wsgi.application' % SITE_NAME
 ########## END WSGI CONFIGURATION
 
 
@@ -382,7 +365,7 @@ REST_FRAMEWORK = {
 ANALYTICS_DATABASE = '{{ INSIGHTS_REPORTS_MYSQL_DATABASE }}'
 # Currently unused, V1 database will support migration to new backend data source
 # ANALYTICS_DATABASE_V1 = 'reports_v1'
-DATABASE_ROUTERS = ['analyticsdataserver.router.AnalyticsApiRouter']
+DATABASE_ROUTERS = ['analyticsdataserver.router.AnalyticsAPIRouter', 'analyticsdataserver.router.AnalyticsModelsRouter']
 ENTERPRISE_REPORTING_DB_ALIAS = 'enterprise'
 
 LMS_BASE_URL = None
@@ -413,6 +396,26 @@ AGGREGATE_PAGE_SIZE = 10
 # We need to set this to None so that we can pass in a large number of Course IDs
 # to course_summaries/
 DATA_UPLOAD_MAX_NUMBER_FIELDS = None
+
+JWT_AUTH = {
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_AUDIENCE': 'lms-key',
+    'JWT_AUTH_COOKIE': 'edx-jwt-cookie',
+    'JWT_ISSUER': [
+        {
+            'AUDIENCE': 'SET-ME-PLEASE',
+            'ISSUER': 'http://127.0.0.1:8000/oauth2',
+            'SECRET_KEY': 'SET-ME-PLEASE'
+        }
+    ],
+    'JWT_DECODE_HANDLER': 'edx_rest_framework_extensions.auth.jwt.decoder.jwt_decode_handler',
+    'JWT_VERIFY_AUDIENCE': False,
+    'JWT_AUTH_COOKIE': 'edx-jwt-cookie',
+    'JWT_PUBLIC_SIGNING_JWK_SET': None,
+    'JWT_AUTH_COOKIE_HEADER_PAYLOAD': 'edx-jwt-cookie-header-payload',
+    'JWT_AUTH_COOKIE_SIGNATURE': 'edx-jwt-cookie-signature',
+    'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
 
 import json
 
@@ -480,8 +483,8 @@ EXTRA_APPS = []
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
     }
 }
 # CACHES = {
