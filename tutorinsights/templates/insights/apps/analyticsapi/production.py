@@ -1,8 +1,6 @@
 """Production settings and globals."""
 
-from ..production import *
 
-{% include "insights/apps/analyticsapi/partials/common.py" %}
 
 from os import environ
 
@@ -12,10 +10,10 @@ import yaml
 # into your settings, but ImproperlyConfigured is an exception.
 from django.core.exceptions import ImproperlyConfigured
 
-# from analyticsdataserver.settings.base import *
-# from analyticsdataserver.settings.logger import get_logger_config
+{% include "insights/apps/analyticsapi/partials/common.py" %}
+from analyticsdataserver.settings.logger import get_logger_config
 
-# LOGGING = get_logger_config()
+LOGGING = get_logger_config()
 
 def get_env_setting(setting):
     """Get the environment setting or return exception."""
@@ -43,14 +41,14 @@ JWT_AUTH.update(JWT_AUTH_CONFIG)
 vars().update(config_from_yaml)
 vars().update(REPORT_DOWNLOAD_BACKEND)
 
-# DB_OVERRIDES = dict(
-#     PASSWORD=environ.get('DB_MIGRATION_PASS', DATABASES['default']['PASSWORD']),
-#     ENGINE=environ.get('DB_MIGRATION_ENGINE', DATABASES['default']['ENGINE']),
-#     USER=environ.get('DB_MIGRATION_USER', DATABASES['default']['USER']),
-#     NAME=environ.get('DB_MIGRATION_NAME', DATABASES['default']['NAME']),
-#     HOST=environ.get('DB_MIGRATION_HOST', DATABASES['default']['HOST']),
-#     PORT=environ.get('DB_MIGRATION_PORT', DATABASES['default']['PORT']),
-# )
+DB_OVERRIDES = dict(
+    PASSWORD=environ.get('DB_MIGRATION_PASS', DATABASES['default']['PASSWORD']),
+    ENGINE=environ.get('DB_MIGRATION_ENGINE', DATABASES['default']['ENGINE']),
+    USER=environ.get('DB_MIGRATION_USER', DATABASES['default']['USER']),
+    NAME=environ.get('DB_MIGRATION_NAME', DATABASES['default']['NAME']),
+    HOST=environ.get('DB_MIGRATION_HOST', DATABASES['default']['HOST']),
+    PORT=environ.get('DB_MIGRATION_PORT', DATABASES['default']['PORT']),
+)
 
-# for override, value in DB_OVERRIDES.items():
-#     DATABASES['default'][override] = value
+for override, value in DB_OVERRIDES.items():
+    DATABASES['default'][override] = value
