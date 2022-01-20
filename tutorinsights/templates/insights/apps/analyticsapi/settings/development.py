@@ -6,7 +6,7 @@ from os.path import join, normpath
 
 from corsheaders.defaults import default_headers as corsheaders_default_headers
 
-{% include "insights/apps/analyticsapi/partials/common.py" %}
+{% include "insights/apps/analyticsapi/settings/partials/common.py" %}
 
 ########## DEBUG CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug

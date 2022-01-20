@@ -2,7 +2,7 @@
 
 import os
 
-{% include "insights/apps/insights/partials/common.py" %}
+{% include "insights/apps/insights/settings/partials/common.py" %}
 
 from analytics_dashboard.settings.logger import get_logger_config
 

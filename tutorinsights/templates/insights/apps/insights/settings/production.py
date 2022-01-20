@@ -1,6 +1,6 @@
 """Production settings and globals."""
 
-{% include "insights/apps/insights/partials/common.py" %}
+{% include "insights/apps/insights/settings/partials/common.py" %}
 from analytics_dashboard.settings.logger import get_logger_config
 from analytics_dashboard.settings.yaml_config import *
 
@@ -22,7 +22,7 @@ DB_OVERRIDES = dict(
 )
 
 for override, value in DB_OVERRIDES.items():
-    DATABASES['default'][override] = 
+    DATABASES['default'][override] = value
 
 # Re-declare the full application name in case the components have been overridden.
 FULL_APPLICATION_NAME = f'{PLATFORM_NAME} {APPLICATION_NAME}'
